@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Modelo Valuation — DCF | Múltiplos | LBO</title>
+<title>Modelo Valuation — Pro</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
@@ -23,7 +23,6 @@
   --gold-light: #e3c789;
   --gold-deep: #9d7f3a;
   --gold-dim: rgba(201,169,97,0.14);
-  --gold-glow: rgba(227,199,137,0.35);
   --silver: #c0c0c8;
   --silver-bright: #e0e0e6;
   --silver-deep: #8a8a92;
@@ -31,6 +30,7 @@
   --success: #7eb685;
   --danger: #c66b65;
   --warn: #d4a655;
+  --info: #6b9ec6;
   --radius: 4px;
   --radius-lg: 8px;
   --shadow: 0 8px 32px rgba(0,0,0,0.4);
@@ -58,12 +58,13 @@ body {
 ::-webkit-scrollbar-thumb:hover { background: var(--gold-deep); }
 ::selection { background: var(--gold-dim); color: var(--gold-light); }
 
+/* HEADER */
 .header {
   position: sticky; top: 0; z-index: 100;
   background: rgba(12,13,16,0.92);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
-  padding: 0 2.5rem;
+  padding: 0 2rem;
 }
 .header::after {
   content: '';
@@ -72,11 +73,11 @@ body {
   opacity: 0.5;
 }
 .header-inner {
-  max-width: 1440px; margin: 0 auto;
+  max-width: 1500px; margin: 0 auto;
   display: flex; align-items: center; justify-content: space-between;
-  height: 72px;
+  height: 72px; gap: 1rem;
 }
-.logo { display: flex; align-items: center; gap: 0.85rem; }
+.logo { display: flex; align-items: center; gap: 0.85rem; flex-shrink: 0; }
 .logo-icon {
   width: 38px; height: 38px;
   background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-deep) 100%);
@@ -89,23 +90,23 @@ body {
 .logo-text { display: flex; flex-direction: column; line-height: 1.1; }
 .logo-title {
   font-family: var(--font-display);
-  font-size: 1.5rem; font-weight: 600;
+  font-size: 1.4rem; font-weight: 600;
   background: linear-gradient(135deg, var(--gold-light), var(--gold) 60%, var(--gold-deep));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 .logo-sub {
-  font-size: 0.65rem; font-weight: 500; letter-spacing: 0.25em;
-  color: var(--silver-deep); text-transform: uppercase;
-  margin-top: 2px;
+  font-size: 0.62rem; font-weight: 500; letter-spacing: 0.22em;
+  color: var(--silver-deep); text-transform: uppercase; margin-top: 2px;
 }
-.nav { display: flex; gap: 0.25rem; }
+.nav { display: flex; gap: 0.15rem; flex-wrap: wrap; }
 .nav-btn {
   background: none; border: none; color: var(--text-secondary);
-  padding: 0.55rem 1rem; border-radius: var(--radius); cursor: pointer;
-  font-family: var(--font-sans); font-size: 0.78rem; font-weight: 500;
-  letter-spacing: 0.05em; text-transform: uppercase;
+  padding: 0.5rem 0.85rem; border-radius: var(--radius); cursor: pointer;
+  font-family: var(--font-sans); font-size: 0.75rem; font-weight: 500;
+  letter-spacing: 0.04em; text-transform: uppercase;
   transition: all 0.25s ease; position: relative;
+  white-space: nowrap;
 }
 .nav-btn:hover { color: var(--silver-bright); }
 .nav-btn.active { color: var(--gold-light); }
@@ -115,11 +116,11 @@ body {
   width: 24px; height: 1px;
   background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
-.header-actions { display: flex; gap: 0.65rem; align-items: center; }
+.header-actions { display: flex; gap: 0.5rem; align-items: center; }
 .btn {
-  font-family: var(--font-sans); font-size: 0.75rem; font-weight: 600;
+  font-family: var(--font-sans); font-size: 0.72rem; font-weight: 600;
   letter-spacing: 0.06em; text-transform: uppercase;
-  padding: 0.55rem 1.1rem; border-radius: var(--radius); border: none; cursor: pointer;
+  padding: 0.5rem 0.95rem; border-radius: var(--radius); border: none; cursor: pointer;
   transition: all 0.25s ease;
 }
 .btn-primary {
@@ -127,9 +128,24 @@ body {
   color: #1a1612;
   box-shadow: 0 2px 12px rgba(201,169,97,0.25), inset 0 1px 0 rgba(255,255,255,0.2);
 }
-.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 18px rgba(201,169,97,0.4), inset 0 1px 0 rgba(255,255,255,0.3); }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 18px rgba(201,169,97,0.4); }
 .btn-ghost { background: transparent; color: var(--silver); border: 1px solid var(--border-light); }
 .btn-ghost:hover { color: var(--silver-bright); border-color: var(--silver-deep); background: var(--silver-dim); }
+.scenario-switch {
+  display: flex; gap: 0; background: var(--bg-input); border: 1px solid var(--border-light);
+  border-radius: var(--radius); padding: 2px;
+}
+.scenario-btn {
+  background: none; border: none; color: var(--text-secondary);
+  padding: 0.35rem 0.75rem; border-radius: 3px; cursor: pointer;
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.05em;
+  text-transform: uppercase; transition: all 0.2s;
+}
+.scenario-btn.active {
+  background: var(--silver-dim); color: var(--silver-bright);
+}
+.scenario-btn.active[data-scen="otimista"] { color: var(--success); background: rgba(126,182,133,0.12); }
+.scenario-btn.active[data-scen="pessimista"] { color: var(--danger); background: rgba(198,107,101,0.12); }
 .status-dot {
   width: 8px; height: 8px; border-radius: 50%;
   background: var(--danger); animation: pulse 2.4s infinite;
@@ -138,6 +154,7 @@ body {
 .status-dot.connected { background: var(--success); }
 @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.45; } }
 
+/* MODAL */
 .modal-overlay {
   position: fixed; inset: 0; z-index: 1000;
   background: rgba(0,0,0,0.75); backdrop-filter: blur(10px);
@@ -149,7 +166,7 @@ body {
   background: var(--bg-card); border: 1px solid var(--border-light);
   border-radius: var(--radius-lg); padding: 2.25rem;
   width: 92%; max-width: 520px; box-shadow: var(--shadow);
-  position: relative;
+  position: relative; max-height: 90vh; overflow-y: auto;
 }
 .modal::before {
   content: ''; position: absolute; top: 0; left: 24px; right: 24px; height: 1px;
@@ -176,13 +193,14 @@ body {
 .form-group .hint { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.35rem; }
 .modal-actions { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 1.75rem; }
 
-.main { max-width: 1440px; margin: 0 auto; padding: 2rem 2.5rem 5rem; }
+/* MAIN */
+.main { max-width: 1500px; margin: 0 auto; padding: 1.75rem 2rem 5rem; }
 .section { display: none; animation: fadeIn 0.4s ease; }
 .section.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
 .section-header {
-  margin-bottom: 2rem; padding-bottom: 1.25rem;
+  margin-bottom: 1.75rem; padding-bottom: 1.1rem;
   border-bottom: 1px solid var(--border); position: relative;
 }
 .section-header::after {
@@ -191,7 +209,7 @@ body {
 }
 .section-header h1 {
   font-family: var(--font-display);
-  font-size: 2.4rem; font-weight: 500;
+  font-size: 2.2rem; font-weight: 500;
   color: var(--text-primary); margin-bottom: 0.25rem;
 }
 .section-header h1 em {
@@ -202,16 +220,16 @@ body {
 }
 .section-header .subtitle {
   color: var(--text-secondary); font-size: 0.85rem;
-  font-weight: 400; letter-spacing: 0.02em;
+  font-weight: 400;
 }
 
 .cards-grid {
-  display: grid; gap: 1.25rem;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  display: grid; gap: 1.1rem;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
 }
 .card {
   background: var(--bg-card); border: 1px solid var(--border);
-  border-radius: var(--radius-lg); padding: 1.5rem;
+  border-radius: var(--radius-lg); padding: 1.4rem;
   transition: all 0.3s ease; position: relative; overflow: hidden;
 }
 .card::before {
@@ -222,36 +240,49 @@ body {
 .card-title {
   font-family: var(--font-sans);
   font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 0.18em; color: var(--silver);
-  margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.6rem;
-  padding-bottom: 0.75rem;
+  letter-spacing: 0.16em; color: var(--silver);
+  margin-bottom: 1.15rem; display: flex; align-items: center; gap: 0.55rem;
+  padding-bottom: 0.7rem;
   border-bottom: 1px solid var(--border);
+  justify-content: space-between;
 }
 .card-title .ornament { color: var(--gold); font-size: 0.85rem; line-height: 1; }
+.card-title-left { display: flex; align-items: center; gap: 0.55rem; }
+.badge {
+  display: inline-block; padding: 0.18rem 0.45rem;
+  font-size: 0.62rem; font-weight: 600; letter-spacing: 0.06em;
+  border-radius: 2px; text-transform: uppercase;
+}
+.badge-gold { background: var(--gold-dim); color: var(--gold-light); }
+.badge-silver { background: var(--silver-dim); color: var(--silver-bright); }
+.badge-success { background: rgba(126,182,133,0.12); color: var(--success); }
+.badge-danger { background: rgba(198,107,101,0.12); color: var(--danger); }
+.badge-warn { background: rgba(212,166,85,0.12); color: var(--warn); }
 
 .data-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
 .data-table th {
-  text-align: left; padding: 0.55rem 0.65rem;
+  text-align: left; padding: 0.5rem 0.6rem;
   font-weight: 600; color: var(--silver-deep);
-  font-size: 0.68rem; text-transform: uppercase;
-  letter-spacing: 0.12em;
+  font-size: 0.66rem; text-transform: uppercase;
+  letter-spacing: 0.1em;
   border-bottom: 1px solid var(--border-light);
   white-space: nowrap;
 }
 .data-table td {
-  padding: 0.5rem 0.65rem;
+  padding: 0.45rem 0.6rem;
   border-bottom: 1px solid rgba(42,46,56,0.5);
   white-space: nowrap;
 }
 .data-table tr:last-child td { border-bottom: none; }
 .data-table td.num {
   text-align: right; font-family: var(--font-mono);
-  font-size: 0.78rem; font-weight: 500;
+  font-size: 0.76rem; font-weight: 500;
   color: var(--text-primary);
   font-feature-settings: "tnum";
 }
 .data-table th.num { text-align: right; }
 .data-table .row-label { color: var(--text-secondary); font-weight: 400; }
+.data-table .row-sublabel { color: var(--text-muted); font-weight: 400; padding-left: 1.2rem; font-style: italic; font-size: 0.78rem; }
 .data-table .row-highlight td {
   background: var(--silver-dim); color: var(--silver-bright); font-weight: 500;
 }
@@ -261,25 +292,31 @@ body {
   font-weight: 600; color: var(--gold-light);
 }
 .data-table .row-result td.num { color: var(--gold-light); }
+.data-table .row-section td {
+  font-size: 0.66rem; font-weight: 700; letter-spacing: 0.12em;
+  color: var(--gold); text-transform: uppercase;
+  padding-top: 0.85rem;
+}
 
 .input-cell {
   background: var(--bg-input); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 0.32rem 0.55rem;
+  border-radius: var(--radius); padding: 0.3rem 0.5rem;
   color: var(--gold-light); font-family: var(--font-mono);
-  font-size: 0.78rem; font-weight: 500;
-  width: 100px; text-align: right; transition: all 0.2s;
+  font-size: 0.76rem; font-weight: 500;
+  width: 95px; text-align: right; transition: all 0.2s;
 }
 .input-cell:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold-dim); }
 .input-cell:hover { border-color: var(--gold-deep); }
+.input-sm { width: 65px; }
 
 .kpi-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem; margin-bottom: 1.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 0.85rem; margin-bottom: 1.5rem;
 }
 .kpi {
   background: var(--bg-card); border: 1px solid var(--border);
-  border-radius: var(--radius-lg); padding: 1.1rem 1.4rem;
+  border-radius: var(--radius-lg); padding: 1rem 1.25rem;
   position: relative; overflow: hidden; transition: all 0.3s ease;
 }
 .kpi:hover { border-color: var(--border-light); }
@@ -290,14 +327,14 @@ body {
 .kpi.kpi-silver::before { background: linear-gradient(180deg, var(--silver-bright), var(--silver-deep)); }
 .kpi.kpi-success::before { background: var(--success); }
 .kpi.kpi-warn::before { background: var(--warn); }
+.kpi.kpi-danger::before { background: var(--danger); }
 .kpi-label {
-  font-size: 0.65rem; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 0.15em; color: var(--silver-deep); margin-bottom: 0.45rem;
+  font-size: 0.62rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.13em; color: var(--silver-deep); margin-bottom: 0.4rem;
 }
 .kpi-value {
   font-family: var(--font-mono);
-  font-size: 1.4rem; font-weight: 600;
-  color: var(--text-primary);
+  font-size: 1.3rem; font-weight: 600; color: var(--text-primary);
 }
 .kpi.kpi-gold .kpi-value {
   background: linear-gradient(135deg, var(--gold-light), var(--gold));
@@ -309,21 +346,23 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+.kpi-sub { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.3rem; }
 
 .chart-container {
   background: var(--bg-card); border: 1px solid var(--border);
-  border-radius: var(--radius-lg); padding: 1.75rem; margin-bottom: 1rem;
+  border-radius: var(--radius-lg); padding: 1.4rem; margin-bottom: 1rem;
 }
-.chart-wrap { position: relative; height: 340px; }
+.chart-wrap { position: relative; height: 320px; }
+.chart-wrap.tall { height: 420px; }
 
-.sens-table { width: 100%; border-collapse: collapse; font-size: 0.76rem; }
+.sens-table { width: 100%; border-collapse: collapse; font-size: 0.74rem; }
 .sens-table th, .sens-table td {
-  padding: 0.45rem 0.55rem; text-align: center;
+  padding: 0.4rem 0.5rem; text-align: center;
   font-family: var(--font-mono); font-weight: 500;
 }
 .sens-table th {
   background: var(--bg-input); color: var(--silver-deep);
-  font-size: 0.68rem;
+  font-size: 0.66rem;
 }
 .sens-table td { border: 1px solid var(--border); }
 .sens-table .cell-low { background: rgba(198,107,101,0.1); color: #d68985; }
@@ -335,50 +374,83 @@ body {
   color: var(--gold-light); font-weight: 600;
 }
 
-.ff-chart { margin: 1.25rem 0 0.5rem; }
+/* FOOTBALL FIELD */
+.ff-chart { margin: 1.1rem 0 0.5rem; }
 .ff-row {
-  display: flex; align-items: center; margin-bottom: 0.85rem;
-  font-size: 0.82rem;
-}
-.ff-label {
-  width: 220px; flex-shrink: 0;
-  color: var(--text-secondary); font-weight: 500;
-  text-align: right; padding-right: 1.25rem;
+  display: flex; align-items: center; margin-bottom: 0.75rem;
   font-size: 0.8rem;
 }
-.ff-bar-area { flex: 1; position: relative; height: 36px; }
+.ff-label {
+  width: 200px; flex-shrink: 0;
+  color: var(--text-secondary); font-weight: 500;
+  text-align: right; padding-right: 1rem;
+  font-size: 0.78rem;
+}
+.ff-bar-area { flex: 1; position: relative; height: 32px; }
 .ff-bar {
   position: absolute; height: 100%; border-radius: 2px;
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600;
-  transition: all 0.5s ease; min-width: 70px;
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600;
+  transition: all 0.5s ease; min-width: 60px;
 }
-.ff-bar.dcf-gordon {
-  background: linear-gradient(90deg, var(--gold-deep), var(--gold), var(--gold-light));
-  color: #1a1612; box-shadow: 0 2px 8px rgba(201,169,97,0.3);
+.ff-bar-mid {
+  position: absolute; top: -4px; bottom: -4px; width: 2px;
+  background: var(--gold-light); box-shadow: 0 0 6px var(--gold);
 }
-.ff-bar.dcf-exit {
-  background: linear-gradient(90deg, var(--gold-deep), var(--gold) 70%);
-  color: #1a1612;
-}
-.ff-bar.mult-ebitda {
-  background: linear-gradient(90deg, var(--silver-deep), var(--silver), var(--silver-bright));
-  color: #1a1612; box-shadow: 0 2px 8px rgba(192,192,200,0.2);
-}
-.ff-bar.mult-rev {
-  background: linear-gradient(90deg, var(--silver-deep), var(--silver) 70%);
-  color: #1a1612;
-}
-.ff-bar.lbo {
-  background: linear-gradient(90deg, var(--gold-deep), var(--silver-deep));
-  color: var(--text-primary);
-}
+.ff-bar.dcf-gordon { background: linear-gradient(90deg, var(--gold-deep), var(--gold), var(--gold-light)); color: #1a1612; }
+.ff-bar.dcf-exit { background: linear-gradient(90deg, var(--gold-deep), var(--gold) 70%); color: #1a1612; }
+.ff-bar.mult-ebitda { background: linear-gradient(90deg, var(--silver-deep), var(--silver), var(--silver-bright)); color: #1a1612; }
+.ff-bar.mult-rev { background: linear-gradient(90deg, var(--silver-deep), var(--silver) 70%); color: #1a1612; }
+.ff-bar.lbo { background: linear-gradient(90deg, var(--gold-deep), var(--silver-deep)); color: var(--text-primary); }
 .ff-axis {
   display: flex; justify-content: space-between;
-  font-size: 0.68rem; color: var(--text-muted);
-  font-family: var(--font-mono); margin-top: 0.75rem;
-  padding-left: 220px;
+  font-size: 0.66rem; color: var(--text-muted);
+  font-family: var(--font-mono); margin-top: 0.7rem;
+  padding-left: 200px;
 }
+
+/* TORNADO */
+.tornado-chart { display: flex; flex-direction: column; gap: 0.4rem; }
+.tornado-row { display: flex; align-items: center; height: 28px; font-size: 0.78rem; }
+.tornado-label { width: 220px; text-align: right; padding-right: 1rem; color: var(--text-secondary); font-size: 0.76rem; }
+.tornado-bar-area { flex: 1; display: flex; position: relative; height: 100%; align-items: center; justify-content: center; }
+.tornado-bar-area::before {
+  content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 1px;
+  background: var(--border-light);
+}
+.tornado-bar { height: 18px; display: flex; align-items: center; padding: 0 0.5rem; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600; }
+.tornado-bar.neg { background: linear-gradient(90deg, var(--danger), rgba(198,107,101,0.4)); justify-content: flex-end; color: #1a1612; }
+.tornado-bar.pos { background: linear-gradient(90deg, rgba(126,182,133,0.4), var(--success)); justify-content: flex-start; color: #1a1612; }
+
+/* MONTE CARLO */
+.histogram { height: 260px; display: flex; align-items: flex-end; gap: 1px; padding: 0 0.5rem; }
+.histogram-bar { flex: 1; background: linear-gradient(180deg, var(--gold-light), var(--gold-deep)); min-height: 1px; transition: all 0.3s; position: relative; }
+.histogram-bar:hover { background: var(--gold-light); }
+.histogram-axis { display: flex; justify-content: space-between; font-size: 0.64rem; color: var(--text-muted); font-family: var(--font-mono); margin-top: 0.4rem; padding: 0 0.5rem; }
+
+/* ALERT */
+.alert {
+  padding: 0.75rem 1rem; border-radius: var(--radius);
+  font-size: 0.8rem; margin-bottom: 0.85rem;
+  border-left: 2px solid var(--warn);
+  background: rgba(212,166,85,0.08);
+  color: var(--text-primary);
+}
+.alert.danger { border-left-color: var(--danger); background: rgba(198,107,101,0.08); }
+.alert.success { border-left-color: var(--success); background: rgba(126,182,133,0.08); }
+.alert.info { border-left-color: var(--info); background: rgba(107,158,198,0.08); }
+.alert strong { color: var(--gold-light); }
+
+/* ATTRIBUTION (LBO) */
+.attr-chart { display: flex; height: 220px; align-items: flex-end; gap: 1.5rem; padding: 1rem; }
+.attr-bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.4rem; }
+.attr-bar { width: 100%; max-width: 80px; min-height: 8px; border-radius: 2px 2px 0 0; }
+.attr-bar.growth { background: linear-gradient(180deg, var(--gold-light), var(--gold)); }
+.attr-bar.multiple { background: linear-gradient(180deg, var(--silver-bright), var(--silver)); }
+.attr-bar.delev { background: linear-gradient(180deg, var(--success), #5a9c63); }
+.attr-label { font-size: 0.72rem; color: var(--text-secondary); text-align: center; font-weight: 500; }
+.attr-value { font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600; color: var(--text-primary); }
+.attr-pct { font-size: 0.7rem; color: var(--text-muted); }
 
 .toast-container { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 999; display: flex; flex-direction: column; gap: 0.5rem; }
 .toast {
@@ -399,21 +471,26 @@ pre.sql-block {
   overflow-x: auto; color: var(--gold-light); line-height: 1.6;
 }
 
-@media (max-width: 900px) {
-  .header { padding: 0 1rem; }
+@media (max-width: 1100px) {
+  .header { padding: 0 1rem; flex-wrap: wrap; }
   .nav { display: none; }
   .main { padding: 1.25rem 1rem 3rem; }
   .ff-label { width: 100px; font-size: 0.7rem; padding-right: 0.5rem; }
   .ff-axis { padding-left: 100px; }
+  .tornado-label { width: 110px; font-size: 0.7rem; padding-right: 0.5rem; }
   .cards-grid { grid-template-columns: 1fr; }
   .kpi-row { grid-template-columns: repeat(2, 1fr); }
-  .section-header h1 { font-size: 1.8rem; }
+  .section-header h1 { font-size: 1.6rem; }
   .logo-sub { display: none; }
 }
 
 .overflow-x { overflow-x: auto; }
 .mt-1 { margin-top: 1rem; }
+.mt-2 { margin-top: 1.5rem; }
 .text-muted { color: var(--text-muted); }
+.flex-1 { flex: 1; }
+.flex { display: flex; }
+.gap-1 { gap: 0.5rem; }
 </style>
 </head>
 <body>
@@ -424,7 +501,7 @@ pre.sql-block {
       <div class="logo-icon">V</div>
       <div class="logo-text">
         <div class="logo-title">Modelo Valuation</div>
-        <div class="logo-sub">DCF · Múltiplos · LBO</div>
+        <div class="logo-sub">DCF · Múltiplos · LBO · Pro</div>
       </div>
     </div>
     <nav class="nav" id="nav">
@@ -432,9 +509,15 @@ pre.sql-block {
       <button class="nav-btn" data-section="dcf">DCF</button>
       <button class="nav-btn" data-section="multiplos">Múltiplos</button>
       <button class="nav-btn" data-section="lbo">LBO</button>
+      <button class="nav-btn" data-section="sensibilidade">Sensibilidade</button>
       <button class="nav-btn" data-section="football">Football Field</button>
     </nav>
     <div class="header-actions">
+      <div class="scenario-switch" id="scenarioSwitch">
+        <button class="scenario-btn" data-scen="pessimista">Pess.</button>
+        <button class="scenario-btn active" data-scen="base">Base</button>
+        <button class="scenario-btn" data-scen="otimista">Otim.</button>
+      </div>
       <div class="status-dot" id="statusDot" title="Supabase desconectado"></div>
       <button class="btn btn-ghost" id="btnConfig">Config</button>
       <button class="btn btn-primary" id="btnSave">Salvar</button>
@@ -445,16 +528,14 @@ pre.sql-block {
 <div class="modal-overlay" id="setupModal">
   <div class="modal">
     <h2>Configurar <em>Supabase</em></h2>
-    <p>Conecte ao seu projeto Supabase para persistir os dados do modelo.</p>
+    <p>Conecte ao seu projeto Supabase para persistir os cenários.</p>
     <div class="form-group">
       <label>Supabase URL</label>
       <input type="text" id="supabaseUrl" placeholder="https://xxxxx.supabase.co">
-      <div class="hint">URL do projeto · Dashboard → Settings → API</div>
     </div>
     <div class="form-group">
       <label>Anon Key</label>
       <input type="text" id="supabaseKey" placeholder="eyJhbGci...">
-      <div class="hint">Chave pública (anon) do projeto</div>
     </div>
     <div class="modal-actions">
       <button class="btn btn-ghost" id="btnCancel">Cancelar</button>
@@ -465,16 +546,12 @@ pre.sql-block {
       <pre class="sql-block">CREATE TABLE IF NOT EXISTS valuation_models (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   name TEXT NOT NULL DEFAULT 'Modelo Padrão',
-  premissas JSONB NOT NULL,
+  scenarios JSONB NOT NULL,
   created_at TIMESTAMPTZ DEFAULT now(),
   updated_at TIMESTAMPTZ DEFAULT now()
 );
-
 ALTER TABLE valuation_models ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Allow all for anon"
-  ON valuation_models FOR ALL
-  USING (true) WITH CHECK (true);</pre>
+CREATE POLICY "Allow all for anon" ON valuation_models FOR ALL USING (true) WITH CHECK (true);</pre>
     </div>
   </div>
 </div>
@@ -482,264 +559,399 @@ CREATE POLICY "Allow all for anon"
 <div class="toast-container" id="toasts"></div>
 
 <div class="main">
+  <!-- Sections will be populated in next step -->
+  <!-- PREMISSAS -->
+<section class="section active" id="sec-premissas">
+  <div class="section-header">
+    <h1><em>Premissas</em></h1>
+    <div class="subtitle">Inputs centralizados · operacionais, capital de giro, WACC, comparáveis e LBO</div>
+  </div>
 
-  <section class="section active" id="sec-premissas">
-    <div class="section-header">
-      <h1><em>Premissas</em></h1>
-      <div class="subtitle">Inputs centralizados · operacionais, WACC, múltiplos e LBO</div>
-    </div>
-
-    <div class="cards-grid">
-      <div class="card" style="grid-column: span 2;">
-        <div class="card-title"><span class="ornament">✦</span>Premissas Operacionais</div>
-        <div class="overflow-x">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th></th>
-                <th class="num">2023</th><th class="num">2024</th><th class="num">2025</th>
-                <th class="num">2026</th><th class="num">2027</th><th class="num">2028</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="row-label">Receita líquida (Ano 0)</td>
-                <td class="num"><input class="input-cell" data-key="receita_base" value="10000000"></td>
-                <td colspan="5" class="num text-muted" style="text-align:left; padding-left:1rem">— projetada automaticamente</td>
-              </tr>
-              <tr>
-                <td class="row-label">Crescimento da receita (%)</td>
-                <td class="num text-muted">—</td>
-                <td class="num"><input class="input-cell" data-key="g1" value="15.0" style="width:75px">%</td>
-                <td class="num"><input class="input-cell" data-key="g2" value="12.0" style="width:75px">%</td>
-                <td class="num"><input class="input-cell" data-key="g3" value="10.0" style="width:75px">%</td>
-                <td class="num"><input class="input-cell" data-key="g4" value="8.0" style="width:75px">%</td>
-                <td class="num"><input class="input-cell" data-key="g5" value="6.0" style="width:75px">%</td>
-              </tr>
-              <tr>
-                <td class="row-label">Margem EBITDA (%)</td>
-                <td class="num"><input class="input-cell" data-key="m0" value="22.0" style="width:75px">%</td>
-                <td class="num"><input class="input-cell" data-key="m1" value="22.0" style="width:75px">%</td>
-                <td class="num"><input class="input-cell" data-key="m2" value="23.0" style="width:75px">%</td>
-                <td class="num"><input class="input-cell" data-key="m3" value="23.0" style="width:75px">%</td>
-                <td class="num"><input class="input-cell" data-key="m4" value="24.0" style="width:75px">%</td>
-                <td class="num"><input class="input-cell" data-key="m5" value="24.0" style="width:75px">%</td>
-              </tr>
-              <tr>
-                <td class="row-label">D&A (% receita)</td>
-                <td class="num" colspan="6" style="text-align:left"><input class="input-cell" data-key="da_pct" value="4.0" style="width:75px">% <span class="text-muted" style="margin-left:0.5rem">(uniforme)</span></td>
-              </tr>
-              <tr>
-                <td class="row-label">CAPEX (% receita)</td>
-                <td class="num"><input class="input-cell" data-key="capex0" value="5.0" style="width:75px">%</td>
-                <td class="num"><input class="input-cell" data-key="capex1" value="5.0" style="width:75px">%</td>
-                <td class="num"><input class="input-cell" data-key="capex2" value="5.0" style="width:75px">%</td>
-                <td class="num"><input class="input-cell" data-key="capex3" value="4.5" style="width:75px">%</td>
-                <td class="num"><input class="input-cell" data-key="capex4" value="4.5" style="width:75px">%</td>
-                <td class="num"><input class="input-cell" data-key="capex5" value="4.0" style="width:75px">%</td>
-              </tr>
-              <tr>
-                <td class="row-label">Δ Cap. Giro (% Δ Receita)</td>
-                <td class="num" colspan="6" style="text-align:left"><input class="input-cell" data-key="wcap_pct" value="10.0" style="width:75px">% <span class="text-muted" style="margin-left:0.5rem">(uniforme)</span></td>
-              </tr>
-              <tr>
-                <td class="row-label">Alíquota IR efetiva</td>
-                <td class="num" colspan="6" style="text-align:left"><input class="input-cell" data-key="tax_rate" value="34.0" style="width:75px">% <span class="text-muted" style="margin-left:0.5rem">(uniforme)</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title"><span class="ornament">✦</span>WACC</div>
+  <div class="cards-grid">
+    <div class="card" style="grid-column: span 2;">
+      <div class="card-title"><div class="card-title-left"><span class="ornament">✦</span>Premissas Operacionais</div></div>
+      <div class="overflow-x">
         <table class="data-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th class="num">2023</th><th class="num">2024</th><th class="num">2025</th>
+              <th class="num">2026</th><th class="num">2027</th><th class="num">2028</th>
+            </tr>
+          </thead>
           <tbody>
-            <tr><td class="row-label">Taxa livre de risco (Rf)</td><td class="num"><input class="input-cell" data-key="rf" value="7.50" style="width:75px">%</td></tr>
-            <tr><td class="row-label">Prêmio de risco (ERP)</td><td class="num"><input class="input-cell" data-key="erp" value="6.50" style="width:75px">%</td></tr>
-            <tr><td class="row-label">Beta desalavancado</td><td class="num"><input class="input-cell" data-key="beta_u" value="0.85"></td></tr>
-            <tr><td class="row-label">D/E alvo</td><td class="num"><input class="input-cell" data-key="de_target" value="0.50"></td></tr>
-            <tr><td class="row-label">Custo da dívida (Kd bruto)</td><td class="num"><input class="input-cell" data-key="kd_bruto" value="25.0" style="width:75px">%</td></tr>
-            <tr class="row-highlight"><td class="row-label">Beta alavancado</td><td class="num" id="beta_l">—</td></tr>
-            <tr class="row-highlight"><td class="row-label">Ke</td><td class="num" id="ke_val">—</td></tr>
-            <tr class="row-highlight"><td class="row-label">Kd pós-IR</td><td class="num" id="kd_pos">—</td></tr>
-            <tr class="row-result"><td class="row-label">WACC</td><td class="num" id="wacc_val">—</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="card">
-        <div class="card-title"><span class="ornament">✦</span>Perpetuidade & Capital</div>
-        <table class="data-table">
-          <tbody>
-            <tr><td class="row-label">Crescimento perpétuo (g)</td><td class="num"><input class="input-cell" data-key="g_perp" value="2.0" style="width:75px">%</td></tr>
-            <tr><td class="row-label">Múltiplo saída EV/EBITDA</td><td class="num"><input class="input-cell" data-key="exit_mult" value="8.0"></td></tr>
-            <tr style="height:8px"><td colspan="2"></td></tr>
-            <tr><td class="row-label">Dívida bruta (R$ mil)</td><td class="num"><input class="input-cell" data-key="divida_bruta" value="120000"></td></tr>
-            <tr><td class="row-label">Caixa (R$ mil)</td><td class="num"><input class="input-cell" data-key="caixa" value="35000"></td></tr>
-            <tr class="row-highlight"><td class="row-label">Dívida líquida</td><td class="num" id="div_liq">—</td></tr>
-            <tr><td class="row-label">Ações em circulação (mil)</td><td class="num"><input class="input-cell" data-key="acoes" value="50000"></td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="card">
-        <div class="card-title"><span class="ornament">✦</span>Múltiplos de Comparáveis</div>
-        <div class="overflow-x">
-          <table class="data-table">
-            <thead><tr><th>Empresa</th><th class="num">EV/EBITDA</th><th class="num">EV/Receita</th><th class="num">P/E</th></tr></thead>
-            <tbody>
-              <tr><td><input class="input-cell" data-key="comp1_name" value="Comparável 1" style="width:130px;text-align:left"></td><td class="num"><input class="input-cell" data-key="comp1_ev" value="8.5" style="width:60px"></td><td class="num"><input class="input-cell" data-key="comp1_rev" value="1.8" style="width:60px"></td><td class="num"><input class="input-cell" data-key="comp1_pe" value="14.0" style="width:60px"></td></tr>
-              <tr><td><input class="input-cell" data-key="comp2_name" value="Comparável 2" style="width:130px;text-align:left"></td><td class="num"><input class="input-cell" data-key="comp2_ev" value="7.2" style="width:60px"></td><td class="num"><input class="input-cell" data-key="comp2_rev" value="1.5" style="width:60px"></td><td class="num"><input class="input-cell" data-key="comp2_pe" value="12.5" style="width:60px"></td></tr>
-              <tr><td><input class="input-cell" data-key="comp3_name" value="Comparável 3" style="width:130px;text-align:left"></td><td class="num"><input class="input-cell" data-key="comp3_ev" value="9.1" style="width:60px"></td><td class="num"><input class="input-cell" data-key="comp3_rev" value="2.1" style="width:60px"></td><td class="num"><input class="input-cell" data-key="comp3_pe" value="15.2" style="width:60px"></td></tr>
-              <tr><td><input class="input-cell" data-key="comp4_name" value="Comparável 4" style="width:130px;text-align:left"></td><td class="num"><input class="input-cell" data-key="comp4_ev" value="6.8" style="width:60px"></td><td class="num"><input class="input-cell" data-key="comp4_rev" value="1.3" style="width:60px"></td><td class="num"><input class="input-cell" data-key="comp4_pe" value="11.0" style="width:60px"></td></tr>
-              <tr><td><input class="input-cell" data-key="comp5_name" value="Comparável 5" style="width:130px;text-align:left"></td><td class="num"><input class="input-cell" data-key="comp5_ev" value="8.0" style="width:60px"></td><td class="num"><input class="input-cell" data-key="comp5_rev" value="1.7" style="width:60px"></td><td class="num"><input class="input-cell" data-key="comp5_pe" value="13.5" style="width:60px"></td></tr>
-              <tr class="row-highlight"><td class="row-label">Mediana</td><td class="num" id="comp_med_ev">—</td><td class="num" id="comp_med_rev">—</td><td class="num" id="comp_med_pe">—</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title"><span class="ornament">✦</span>Premissas LBO</div>
-        <table class="data-table">
-          <tbody>
-            <tr><td class="row-label">Múltiplo entrada EV/EBITDA</td><td class="num"><input class="input-cell" data-key="lbo_entry_mult" value="7.5"></td></tr>
-            <tr><td class="row-label">Múltiplo saída EV/EBITDA</td><td class="num"><input class="input-cell" data-key="lbo_exit_mult" value="7.5"></td></tr>
-            <tr><td class="row-label">Alavancagem (D/EBITDA)</td><td class="num"><input class="input-cell" data-key="lbo_leverage" value="4.5"></td></tr>
-            <tr><td class="row-label">Custo dívida LBO</td><td class="num"><input class="input-cell" data-key="lbo_kd" value="14.5" style="width:75px">%</td></tr>
-            <tr><td class="row-label">Fees de transação (% EV)</td><td class="num"><input class="input-cell" data-key="lbo_fees" value="2.0" style="width:75px">%</td></tr>
-            <tr><td class="row-label">% FCF p/ amortização</td><td class="num"><input class="input-cell" data-key="lbo_amort_pct" value="80.0" style="width:75px">%</td></tr>
+            <tr>
+              <td class="row-label">Receita líquida (Ano 0)</td>
+              <td class="num"><input class="input-cell" data-key="receita_base" value="10000000"></td>
+              <td colspan="5" class="text-muted" style="font-size:0.75rem;">— projetada com crescimento</td>
+            </tr>
+            <tr>
+              <td class="row-label">Crescimento da receita (%)</td>
+              <td class="num text-muted">—</td>
+              <td class="num"><input class="input-cell input-sm" data-key="g1" value="15.0">%</td>
+              <td class="num"><input class="input-cell input-sm" data-key="g2" value="12.0">%</td>
+              <td class="num"><input class="input-cell input-sm" data-key="g3" value="10.0">%</td>
+              <td class="num"><input class="input-cell input-sm" data-key="g4" value="8.0">%</td>
+              <td class="num"><input class="input-cell input-sm" data-key="g5" value="6.0">%</td>
+            </tr>
+            <tr>
+              <td class="row-label">Margem EBITDA (%)</td>
+              <td class="num"><input class="input-cell input-sm" data-key="m0" value="22.0">%</td>
+              <td class="num"><input class="input-cell input-sm" data-key="m1" value="22.0">%</td>
+              <td class="num"><input class="input-cell input-sm" data-key="m2" value="23.0">%</td>
+              <td class="num"><input class="input-cell input-sm" data-key="m3" value="23.0">%</td>
+              <td class="num"><input class="input-cell input-sm" data-key="m4" value="24.0">%</td>
+              <td class="num"><input class="input-cell input-sm" data-key="m5" value="24.0">%</td>
+            </tr>
+            <tr>
+              <td class="row-label">CMV/COGS (% receita)</td>
+              <td class="num"><input class="input-cell input-sm" data-key="cogs" value="65.0">%</td>
+              <td colspan="5" class="text-muted" style="font-size:0.74rem;">— uniforme · usado para NWC</td>
+            </tr>
+            <tr>
+              <td class="row-label">D&A (% receita)</td>
+              <td class="num"><input class="input-cell input-sm" data-key="da_pct" value="4.0">%</td>
+              <td colspan="5" class="text-muted" style="font-size:0.74rem;">— uniforme</td>
+            </tr>
+            <tr>
+              <td class="row-label">CAPEX (% receita)</td>
+              <td class="num"><input class="input-cell input-sm" data-key="capex0" value="5.0">%</td>
+              <td class="num"><input class="input-cell input-sm" data-key="capex1" value="5.0">%</td>
+              <td class="num"><input class="input-cell input-sm" data-key="capex2" value="5.0">%</td>
+              <td class="num"><input class="input-cell input-sm" data-key="capex3" value="4.5">%</td>
+              <td class="num"><input class="input-cell input-sm" data-key="capex4" value="4.5">%</td>
+              <td class="num"><input class="input-cell input-sm" data-key="capex5" value="4.0">%</td>
+            </tr>
+            <tr>
+              <td class="row-label">Alíquota IR efetiva</td>
+              <td class="num"><input class="input-cell input-sm" data-key="tax_rate" value="34.0">%</td>
+              <td class="row-label" colspan="2" style="text-align:left">Prejuízos fiscais a compensar</td>
+              <td class="num" colspan="3"><input class="input-cell" data-key="nols" value="0"> R$ mil</td>
+            </tr>
           </tbody>
         </table>
       </div>
     </div>
-  </section>
 
-  <section class="section" id="sec-dcf">
-    <div class="section-header">
-      <h1><em>DCF</em> — Discounted Cash Flow</h1>
-      <div class="subtitle">FCFF descontado ao WACC · Terminal Value por Gordon e Múltiplo de Saída</div>
-    </div>
-    <div class="kpi-row" id="dcf-kpis"></div>
-    <div class="cards-grid">
-      <div class="card" style="grid-column: span 2;">
-        <div class="card-title"><span class="ornament">✦</span>DRE Projetada & FCFF</div>
-        <div class="overflow-x"><table class="data-table" id="tblDCF"></table></div>
-      </div>
-      <div class="card">
-        <div class="card-title"><span class="ornament">✦</span>Enterprise & Equity Value</div>
-        <table class="data-table" id="tblEV"></table>
-      </div>
-      <div class="card">
-        <div class="card-title"><span class="ornament">✦</span>Sensibilidade EV — WACC × g</div>
-        <div class="overflow-x" id="sensDCF"></div>
-      </div>
-    </div>
-    <div class="chart-container mt-1">
-      <div class="card-title"><span class="ornament">✦</span>FCFF & Valor Presente (R$ mil)</div>
-      <div class="chart-wrap"><canvas id="chartDCF"></canvas></div>
-    </div>
-  </section>
-
-  <section class="section" id="sec-multiplos">
-    <div class="section-header">
-      <h1>Valuation por <em>Múltiplos</em></h1>
-      <div class="subtitle">Comparáveis aplicados sobre métricas projetadas do Ano 1</div>
-    </div>
-    <div class="kpi-row" id="mult-kpis"></div>
-    <div class="cards-grid">
-      <div class="card" style="grid-column: span 2;">
-        <div class="card-title"><span class="ornament">✦</span>EV & Equity Value por Múltiplo</div>
-        <div class="overflow-x"><table class="data-table" id="tblMult"></table></div>
-      </div>
-      <div class="card" style="grid-column: span 2;">
-        <div class="card-title"><span class="ornament">✦</span>Faixas de Valuation (Mín–Máx)</div>
-        <div class="overflow-x"><table class="data-table" id="tblMultRange"></table></div>
-      </div>
-    </div>
-    <div class="chart-container mt-1">
-      <div class="card-title"><span class="ornament">✦</span>Equity Value por Método (R$ mil)</div>
-      <div class="chart-wrap"><canvas id="chartMult"></canvas></div>
-    </div>
-  </section>
-
-  <section class="section" id="sec-lbo">
-    <div class="section-header">
-      <h1><em>LBO</em> — Leveraged Buyout</h1>
-      <div class="subtitle">Sources & Uses · Cash Sweep · Retorno ao Sponsor</div>
-    </div>
-    <div class="kpi-row" id="lbo-kpis"></div>
-    <div class="cards-grid">
-      <div class="card">
-        <div class="card-title"><span class="ornament">✦</span>Sources & Uses</div>
-        <table class="data-table" id="tblSU"></table>
-      </div>
-      <div class="card">
-        <div class="card-title"><span class="ornament">✦</span>Saída & Retorno</div>
-        <table class="data-table" id="tblReturn"></table>
-      </div>
-      <div class="card" style="grid-column: span 2;">
-        <div class="card-title"><span class="ornament">✦</span>Fluxo Operacional & Schedule de Dívida</div>
-        <div class="overflow-x"><table class="data-table" id="tblLBOFlow"></table></div>
-      </div>
-      <div class="card" style="grid-column: span 2;">
-        <div class="card-title"><span class="ornament">✦</span>Sensibilidade IRR — Múlt. Saída × D/EBITDA</div>
-        <div class="overflow-x" id="sensLBO"></div>
-      </div>
-    </div>
-    <div class="chart-container mt-1">
-      <div class="card-title"><span class="ornament">✦</span>Perfil de Dívida & Equity</div>
-      <div class="chart-wrap"><canvas id="chartLBO"></canvas></div>
-    </div>
-  </section>
-
-  <section class="section" id="sec-football">
-    <div class="section-header">
-      <h1><em>Football Field</em></h1>
-      <div class="subtitle">Consolidação de faixas de Enterprise Value por metodologia</div>
-    </div>
-    <div class="kpi-row" id="ff-kpis"></div>
     <div class="card">
-      <div class="card-title"><span class="ornament">✦</span>Faixas de EV por Metodologia (R$ mil)</div>
-      <div class="ff-chart" id="footballField"></div>
-      <div class="ff-axis" id="ffAxis"></div>
+      <div class="card-title"><div class="card-title-left"><span class="ornament">✦</span>Capital de Giro <span class="badge badge-silver">por prazos</span></div></div>
+      <table class="data-table">
+        <tbody>
+          <tr><td class="row-label">DSO — prazo médio recebimento</td><td class="num"><input class="input-cell input-sm" data-key="dso" value="60"> dias</td></tr>
+          <tr><td class="row-label">DIO — prazo médio estoque</td><td class="num"><input class="input-cell input-sm" data-key="dio" value="45"> dias</td></tr>
+          <tr><td class="row-label">DPO — prazo médio pagamento</td><td class="num"><input class="input-cell input-sm" data-key="dpo" value="35"> dias</td></tr>
+          <tr class="row-highlight"><td class="row-label">NWC / Receita (steady)</td><td class="num" id="nwc_pct">—</td></tr>
+          <tr><td colspan="2" class="text-muted" style="font-size:0.7rem; padding-top:0.6rem">NWC = (DSO × Receita + DIO × CMV − DPO × CMV) / 360</td></tr>
+        </tbody>
+      </table>
     </div>
-    <div class="card mt-1">
-      <div class="card-title"><span class="ornament">✦</span>Síntese de Indicadores-Chave</div>
-      <table class="data-table" id="tblSintese"></table>
+
+    <div class="card">
+      <div class="card-title"><div class="card-title-left"><span class="ornament">✦</span>Inflação & Coerência <span class="badge badge-warn">nominal/real</span></div></div>
+      <table class="data-table">
+        <tbody>
+          <tr><td class="row-label">Inflação esperada (LP)</td><td class="num"><input class="input-cell input-sm" data-key="inflacao" value="4.0">%</td></tr>
+          <tr><td class="row-label">g real (perpetuidade)</td><td class="num"><input class="input-cell input-sm" data-key="g_real" value="2.0">%</td></tr>
+          <tr class="row-highlight"><td class="row-label">g nominal (calculado)</td><td class="num" id="g_nominal">—</td></tr>
+          <tr><td colspan="2" class="text-muted" style="font-size:0.7rem; padding-top:0.6rem">g_nom = (1+infl) × (1+g_real) − 1<br>Como WACC é nominal, g de perpetuidade também precisa ser nominal.</td></tr>
+        </tbody>
+      </table>
     </div>
-  </section>
+
+    <div class="card">
+      <div class="card-title"><div class="card-title-left"><span class="ornament">✦</span>WACC</div></div>
+      <table class="data-table">
+        <tbody>
+          <tr><td class="row-label">Rf nominal</td><td class="num"><input class="input-cell input-sm" data-key="rf" value="11.65">%</td></tr>
+          <tr><td colspan="2" class="text-muted" style="font-size:0.7rem;">≈ (1+Rf_real) × (1+infl) − 1 · ex: 7,5% real + 4% infl ≈ 11,8%</td></tr>
+          <tr><td class="row-label">Prêmio de risco (ERP)</td><td class="num"><input class="input-cell input-sm" data-key="erp" value="6.50">%</td></tr>
+          <tr><td class="row-label">D/E alvo</td><td class="num"><input class="input-cell input-sm" data-key="de_target" value="0.50"></td></tr>
+          <tr><td class="row-label">Custo da dívida (Kd bruto)</td><td class="num"><input class="input-cell input-sm" data-key="kd_bruto" value="14.5">%</td></tr>
+          <tr class="row-highlight"><td class="row-label">Beta U (mediana comparáveis)</td><td class="num" id="beta_u_med">—</td></tr>
+          <tr class="row-highlight"><td class="row-label">Beta L (realavancado)</td><td class="num" id="beta_l">—</td></tr>
+          <tr class="row-highlight"><td class="row-label">Ke</td><td class="num" id="ke_val">—</td></tr>
+          <tr class="row-highlight"><td class="row-label">Kd pós-IR</td><td class="num" id="kd_pos">—</td></tr>
+          <tr class="row-result"><td class="row-label">WACC</td><td class="num" id="wacc_val">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="card-title-left"><span class="ornament">✦</span>Perpetuidade & Capital</div></div>
+      <table class="data-table">
+        <tbody>
+          <tr><td class="row-label">Múltiplo saída EV/EBITDA</td><td class="num"><input class="input-cell input-sm" data-key="exit_mult" value="8.0"></td></tr>
+          <tr><td class="row-label">CAPEX perpétuo (% receita)</td><td class="num"><input class="input-cell input-sm" data-key="capex_perp" value="4.0">%</td></tr>
+          <tr><td colspan="2" class="text-muted" style="font-size:0.7rem;">Steady-state: CAPEX_perp ≈ D&A · evita over-capex eterno</td></tr>
+          <tr><td colspan="2" style="height:6px"></td></tr>
+          <tr><td class="row-label">Dívida bruta (R$ mil)</td><td class="num"><input class="input-cell" data-key="divida_bruta" value="120000"></td></tr>
+          <tr><td class="row-label">Caixa (R$ mil)</td><td class="num"><input class="input-cell" data-key="caixa" value="35000"></td></tr>
+          <tr class="row-highlight"><td class="row-label">Dívida líquida</td><td class="num" id="div_liq">—</td></tr>
+          <tr><td class="row-label">Ações em circulação (mil)</td><td class="num"><input class="input-cell" data-key="acoes" value="50000"></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card" style="grid-column: span 2;">
+      <div class="card-title"><div class="card-title-left"><span class="ornament">✦</span>Comparáveis <span class="badge badge-silver">com beta para realavancagem</span></div></div>
+      <div class="overflow-x">
+        <table class="data-table">
+          <thead><tr>
+            <th>Empresa</th>
+            <th class="num">Beta L</th>
+            <th class="num">D/E</th>
+            <th class="num">Beta U</th>
+            <th class="num">EV/EBITDA</th>
+            <th class="num">EV/Receita</th>
+            <th class="num">P/E</th>
+          </tr></thead>
+          <tbody id="compsBody">
+            <!-- Filled by JS -->
+          </tbody>
+          <tfoot>
+            <tr class="row-highlight">
+              <td class="row-label">Mediana</td>
+              <td class="num" id="comp_med_bl">—</td>
+              <td class="num" id="comp_med_de">—</td>
+              <td class="num" id="comp_med_bu">—</td>
+              <td class="num" id="comp_med_ev">—</td>
+              <td class="num" id="comp_med_rev">—</td>
+              <td class="num" id="comp_med_pe">—</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="card-title-left"><span class="ornament">✦</span>LBO — Estrutura</div></div>
+      <table class="data-table">
+        <tbody>
+          <tr class="row-section"><td colspan="2">Transação</td></tr>
+          <tr><td class="row-label">Múltiplo entrada EV/EBITDA</td><td class="num"><input class="input-cell input-sm" data-key="lbo_entry_mult" value="7.5"></td></tr>
+          <tr><td class="row-label">Múltiplo saída EV/EBITDA</td><td class="num"><input class="input-cell input-sm" data-key="lbo_exit_mult" value="7.5"></td></tr>
+          <tr><td class="row-label">Fees de transação (% EV)</td><td class="num"><input class="input-cell input-sm" data-key="lbo_fees" value="2.0">%</td></tr>
+          <tr class="row-section"><td colspan="2">Tranche A — Term Loan B (amortizing)</td></tr>
+          <tr><td class="row-label">Alavancagem (D/EBITDA)</td><td class="num"><input class="input-cell input-sm" data-key="lbo_lev_tlb" value="3.5"></td></tr>
+          <tr><td class="row-label">Custo (Kd)</td><td class="num"><input class="input-cell input-sm" data-key="lbo_kd_tlb" value="13.5">%</td></tr>
+          <tr><td class="row-label">Amort. mandatória (% saldo/ano)</td><td class="num"><input class="input-cell input-sm" data-key="lbo_amort_tlb" value="5.0">%</td></tr>
+          <tr class="row-section"><td colspan="2">Tranche B — Mezz/HY (bullet)</td></tr>
+          <tr><td class="row-label">Alavancagem (D/EBITDA)</td><td class="num"><input class="input-cell input-sm" data-key="lbo_lev_mezz" value="1.0"></td></tr>
+          <tr><td class="row-label">Custo (Kd)</td><td class="num"><input class="input-cell input-sm" data-key="lbo_kd_mezz" value="17.0">%</td></tr>
+          <tr class="row-section"><td colspan="2">Cash Sweep & Covenants</td></tr>
+          <tr><td class="row-label">% FCF p/ amortização extra</td><td class="num"><input class="input-cell input-sm" data-key="lbo_amort_pct" value="80.0">%</td></tr>
+          <tr><td class="row-label">Net Leverage máx (covenant)</td><td class="num"><input class="input-cell input-sm" data-key="lbo_cov_lev" value="5.5">x</td></tr>
+          <tr><td class="row-label">ICR mín (covenant)</td><td class="num"><input class="input-cell input-sm" data-key="lbo_cov_icr" value="2.0">x</td></tr>
+          <tr><td class="row-label">Dividend recap (Ano 3, % equity)</td><td class="num"><input class="input-cell input-sm" data-key="lbo_div_recap" value="0">%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- DCF -->
+<section class="section" id="sec-dcf">
+  <div class="section-header">
+    <h1><em>DCF</em> — Discounted Cash Flow</h1>
+    <div class="subtitle">FCFF descontado ao WACC · NWC por prazos · CAPEX_perp = D&A · Cross-checks de coerência</div>
+  </div>
+  <div id="dcf-alerts"></div>
+  <div class="kpi-row" id="dcf-kpis"></div>
+  <div class="cards-grid">
+    <div class="card" style="grid-column: span 2;">
+      <div class="card-title"><div class="card-title-left"><span class="ornament">✦</span>DRE Projetada & FCFF</div></div>
+      <div class="overflow-x"><table class="data-table" id="tblDCF"></table></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><div class="card-title-left"><span class="ornament">✦</span>Enterprise & Equity Value</div></div>
+      <table class="data-table" id="tblEV"></table>
+    </div>
+    <div class="card">
+      <div class="card-title"><div class="card-title-left"><span class="ornament">✦</span>Sensibilidade — WACC × g_nom</div></div>
+      <div class="overflow-x" id="sensDCF"></div>
+    </div>
+    <div class="card" style="grid-column: span 2;">
+      <div class="card-title"><div class="card-title-left"><span class="ornament">✦</span>Cross-checks de Coerência</div></div>
+      <div id="dcf-checks"></div>
+    </div>
+  </div>
+  <div class="chart-container mt-1">
+    <div class="card-title"><div class="card-title-left"><span class="ornament">✦</span>FCFF & Valor Presente (R$ mil)</div></div>
+    <div class="chart-wrap"><canvas id="chartDCF"></canvas></div>
+  </div>
+</section>
+
+<!-- MÚLTIPLOS -->
+<section class="section" id="sec-multiplos">
+  <div class="section-header">
+    <h1>Valuation por <em>Múltiplos</em></h1>
+    <div class="subtitle">Aplicação LTM · NTM · FY+1 · faixas mín-máx · P/E só sobre Equity</div>
+  </div>
+  <div class="kpi-row" id="mult-kpis"></div>
+  <div class="cards-grid">
+    <div class="card" style="grid-column: span 2;">
+      <div class="card-title"><div class="card-title-left"><span class="ornament">✦</span>EV & Equity por Período de Aplicação</div></div>
+      <div class="overflow-x"><table class="data-table" id="tblMult"></table></div>
+    </div>
+    <div class="card" style="grid-column: span 2;">
+      <div class="card-title"><div class="card-title-left"><span class="ornament">✦</span>Faixas de Valuation por Comparável</div></div>
+      <div class="overflow-x"><table class="data-table" id="tblMultRange"></table></div>
+    </div>
+  </div>
+  <div class="chart-container mt-1">
+    <div class="card-title"><div class="card-title-left"><span class="ornament">✦</span>Equity Value por Método (R$ mil)</div></div>
+    <div class="chart-wrap"><canvas id="chartMult"></canvas></div>
+  </div>
+</section>
+
+<!-- LBO -->
+<section class="section" id="sec-lbo">
+  <div class="section-header">
+    <h1><em>LBO</em> — Leveraged Buyout</h1>
+    <div class="subtitle">Multi-tranche · Cash Sweep · Covenants · IRR via vetor de CFs · Decomposição do retorno</div>
+  </div>
+  <div id="lbo-alerts"></div>
+  <div class="kpi-row" id="lbo-kpis"></div>
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-title"><div class="card-title-left"><span class="ornament">✦</span>Sources & Uses</div></div>
+      <table class="data-table" id="tblSU"></table>
+    </div>
+    <div class="card">
+      <div class="card-title"><div class="card-title-left"><span class="ornament">✦</span>Saída & Retorno</div></div>
+      <table class="data-table" id="tblReturn"></table>
+    </div>
+    <div class="card" style="grid-column: span 2;">
+      <div class="card-title"><div class="card-title-left"><span class="ornament">✦</span>Schedule de Dívida — TLB & Mezz</div></div>
+      <div class="overflow-x"><table class="data-table" id="tblLBOFlow"></table></div>
+    </div>
+    <div class="card" style="grid-column: span 2;">
+      <div class="card-title"><div class="card-title-left"><span class="ornament">✦</span>Decomposição do Retorno do Sponsor</div></div>
+      <div class="attr-chart" id="lboAttr"></div>
+      <div class="text-muted" style="font-size:0.74rem; padding: 0 1rem 0.5rem; text-align:center">Equity exit − Equity entry = Crescimento EBITDA + Multiple Δ + Deleveraging</div>
+    </div>
+    <div class="card" style="grid-column: span 2;">
+      <div class="card-title"><div class="card-title-left"><span class="ornament">✦</span>Sensibilidade IRR — Múlt. Saída × D/EBITDA total</div></div>
+      <div class="overflow-x" id="sensLBO"></div>
+    </div>
+  </div>
+  <div class="chart-container mt-1">
+    <div class="card-title"><div class="card-title-left"><span class="ornament">✦</span>Perfil de Dívida & Equity</div></div>
+    <div class="chart-wrap"><canvas id="chartLBO"></canvas></div>
+  </div>
+</section>
+
+<!-- SENSIBILIDADE -->
+<section class="section" id="sec-sensibilidade">
+  <div class="section-header">
+    <h1>Análise de <em>Sensibilidade</em></h1>
+    <div class="subtitle">Tornado · Monte Carlo · drivers de valor</div>
+  </div>
+
+  <div class="kpi-row" id="sens-kpis"></div>
+
+  <div class="cards-grid">
+    <div class="card" style="grid-column: span 2;">
+      <div class="card-title">
+        <div class="card-title-left"><span class="ornament">✦</span>Tornado — Sensibilidade do EV (DCF)</div>
+        <span class="text-muted" style="font-size:0.7rem">±10% em cada premissa</span>
+      </div>
+      <div class="tornado-chart" id="tornado"></div>
+      <div class="text-muted" style="font-size:0.72rem; text-align:center; margin-top:0.75rem">As variáveis estão ordenadas pelo impacto no EV. Quanto maior a barra, maior a sensibilidade.</div>
+    </div>
+
+    <div class="card" style="grid-column: span 2;">
+      <div class="card-title">
+        <div class="card-title-left"><span class="ornament">✦</span>Monte Carlo — Distribuição do EV</div>
+        <button class="btn btn-ghost" id="btnRunMC">Rodar 2.000 simulações</button>
+      </div>
+      <div id="mcContent">
+        <div class="text-muted" style="text-align:center; padding:2rem; font-size:0.85rem">Clique em <strong>Rodar 2.000 simulações</strong> para gerar a distribuição do EV com variações triangulares (±15%) nas premissas-chave.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTBALL FIELD -->
+<section class="section" id="sec-football">
+  <div class="section-header">
+    <h1><em>Football Field</em></h1>
+    <div class="subtitle">Faixas reais derivadas das matrizes de sensibilidade · não cosméticas</div>
+  </div>
+  <div class="kpi-row" id="ff-kpis"></div>
+  <div class="card">
+    <div class="card-title"><div class="card-title-left"><span class="ornament">✦</span>Faixas de EV por Metodologia (R$ mil)</div></div>
+    <div class="ff-chart" id="footballField"></div>
+    <div class="ff-axis" id="ffAxis"></div>
+    <div class="text-muted" style="font-size:0.74rem; margin-top:1rem; padding:0.6rem; background:var(--bg-input); border-radius:var(--radius);">
+      <strong style="color:var(--gold-light)">Fontes das faixas:</strong> DCF Gordon e Múltiplo derivam dos extremos da matriz WACC×g (±2pp WACC, ±2pp g). Múltiplos vêm dos extremos dos comparáveis (mín/máx). LBO vem dos extremos do exit multiple (±1x). Linha vertical clara = valor central.
+    </div>
+  </div>
+  <div class="card mt-1">
+    <div class="card-title"><div class="card-title-left"><span class="ornament">✦</span>Síntese de Indicadores-Chave</div></div>
+    <table class="data-table" id="tblSintese"></table>
+  </div>
+</section>
 
 </div>
 
-<script>
+<script id="app-script">
 (function() {
 'use strict';
 
+// ============================
+// STATE
+// ============================
 let sbClient = null;
 let currentModelId = null;
+let currentScenario = 'base';
+let scenarios = { base: {}, otimista: {}, pessimista: {} };
 let chartDCFInstance = null;
 let chartMultInstance = null;
 let chartLBOInstance = null;
 
+// ============================
+// DEFAULT VALUES (used to init scenarios)
+// ============================
+const COMPS_DEFAULT = [
+  { name: 'Comparável 1', beta_l: 1.10, de: 0.45, ev_ebitda: 8.5, ev_rev: 1.8, pe: 14.0 },
+  { name: 'Comparável 2', beta_l: 0.95, de: 0.30, ev_ebitda: 7.2, ev_rev: 1.5, pe: 12.5 },
+  { name: 'Comparável 3', beta_l: 1.20, de: 0.60, ev_ebitda: 9.1, ev_rev: 2.1, pe: 15.2 },
+  { name: 'Comparável 4', beta_l: 0.85, de: 0.20, ev_ebitda: 6.8, ev_rev: 1.3, pe: 11.0 },
+  { name: 'Comparável 5', beta_l: 1.05, de: 0.50, ev_ebitda: 8.0, ev_rev: 1.7, pe: 13.5 },
+];
+
+// Scenario deltas applied on top of base
+const SCENARIO_DELTAS = {
+  base: {},
+  otimista: { g1: 3, g2: 3, g3: 2, g4: 2, g5: 1, m0: 1, m1: 1, m2: 1, m3: 1, m4: 1, m5: 1 },
+  pessimista: { g1: -3, g2: -3, g3: -2, g4: -2, g5: -1, m0: -1, m1: -1, m2: -1, m3: -1, m4: -1, m5: -1 }
+};
+
+// ============================
+// HELPERS
+// ============================
 const fmt = (v, dec=0) => {
-  if (v == null || isNaN(v)) return '—';
+  if (v == null || isNaN(v) || !isFinite(v)) return '—';
   const abs = Math.abs(v);
   if (abs >= 1e9) return (v/1e9).toFixed(1) + 'B';
   if (abs >= 1e6) return (v/1e6).toFixed(1) + 'M';
   if (abs >= 1e3) return (v/1e3).toFixed(1) + 'K';
   return v.toFixed(dec);
 };
-const fmtN = (v) => v == null || isNaN(v) ? '—' : v.toLocaleString('pt-BR', {maximumFractionDigits:0});
-const fmtP = (v, dec=1) => v == null || isNaN(v) ? '—' : (v*100).toFixed(dec) + '%';
-const fmtX = (v) => v == null || isNaN(v) ? '—' : v.toFixed(1) + 'x';
-const fmtR = (v) => v == null || isNaN(v) ? '—' : 'R$ ' + v.toLocaleString('pt-BR', {maximumFractionDigits:0});
-const median = arr => { const s = [...arr].sort((a,b)=>a-b); const m = Math.floor(s.length/2); return s.length%2 ? s[m] : (s[m-1]+s[m])/2; };
+const fmtN = (v) => v == null || isNaN(v) || !isFinite(v) ? '—' : v.toLocaleString('pt-BR', {maximumFractionDigits:0});
+const fmtP = (v, dec=1) => v == null || isNaN(v) || !isFinite(v) ? '—' : (v*100).toFixed(dec) + '%';
+const fmtX = (v) => v == null || isNaN(v) || !isFinite(v) ? '—' : v.toFixed(1) + 'x';
+const fmtR = (v) => v == null || isNaN(v) || !isFinite(v) ? '—' : 'R$ ' + v.toLocaleString('pt-BR', {maximumFractionDigits:0});
+const median = arr => { const s = [...arr].filter(x=>!isNaN(x)).sort((a,b)=>a-b); if(!s.length)return 0; const m = Math.floor(s.length/2); return s.length%2 ? s[m] : (s[m-1]+s[m])/2; };
 
 function getVal(key) {
   const el = document.querySelector(`[data-key="${key}"]`);
-  return el ? parseFloat(el.value) : 0;
+  return el ? parseFloat(el.value) || 0 : 0;
+}
+function getStr(key) {
+  const el = document.querySelector(`[data-key="${key}"]`);
+  return el ? el.value : '';
 }
 function getAllInputs() {
   const data = {};
@@ -753,16 +965,91 @@ function setAllInputs(data) {
   });
 }
 
-function showSection(name) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  const sec = document.getElementById('sec-' + name);
-  if (sec) sec.classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  const btn = document.querySelector(`.nav-btn[data-section="${name}"]`);
-  if (btn) btn.classList.add('active');
-  recalcAll();
+// IRR via Newton-Raphson on cash flows
+function irr(cfs, guess = 0.1) {
+  let r = guess;
+  for (let iter = 0; iter < 100; iter++) {
+    let npv = 0, dnpv = 0;
+    for (let t = 0; t < cfs.length; t++) {
+      npv += cfs[t] / Math.pow(1 + r, t);
+      dnpv -= t * cfs[t] / Math.pow(1 + r, t + 1);
+    }
+    if (Math.abs(npv) < 1e-6) return r;
+    if (dnpv === 0) break;
+    const r_new = r - npv / dnpv;
+    if (!isFinite(r_new)) break;
+    if (Math.abs(r_new - r) < 1e-7) return r_new;
+    r = r_new;
+    if (r < -0.99) r = -0.5;
+  }
+  // Fallback to bisection
+  let lo = -0.5, hi = 5.0;
+  for (let i = 0; i < 200; i++) {
+    const mid = (lo + hi) / 2;
+    let npv = 0;
+    for (let t = 0; t < cfs.length; t++) npv += cfs[t] / Math.pow(1 + mid, t);
+    if (Math.abs(npv) < 1) return mid;
+    if (npv > 0) lo = mid; else hi = mid;
+  }
+  return null;
 }
 
+// Triangular distribution sampler for Monte Carlo
+function sampleTriangular(min, mode, max) {
+  const u = Math.random();
+  const c = (mode - min) / (max - min);
+  if (u < c) return min + Math.sqrt(u * (max - min) * (mode - min));
+  return max - Math.sqrt((1 - u) * (max - min) * (max - mode));
+}
+
+// ============================
+// COMPS — render dynamic table
+// ============================
+function renderCompsInputs() {
+  const tbody = document.getElementById('compsBody');
+  tbody.innerHTML = COMPS_DEFAULT.map((c, i) => {
+    const idx = i + 1;
+    return `<tr>
+      <td><input class="input-cell" data-key="comp${idx}_name" value="${c.name}" style="width:120px;text-align:left"></td>
+      <td class="num"><input class="input-cell input-sm" data-key="comp${idx}_bl" value="${c.beta_l}"></td>
+      <td class="num"><input class="input-cell input-sm" data-key="comp${idx}_de" value="${c.de}"></td>
+      <td class="num" id="comp${idx}_bu">—</td>
+      <td class="num"><input class="input-cell input-sm" data-key="comp${idx}_ev" value="${c.ev_ebitda}"></td>
+      <td class="num"><input class="input-cell input-sm" data-key="comp${idx}_rev" value="${c.ev_rev}"></td>
+      <td class="num"><input class="input-cell input-sm" data-key="comp${idx}_pe" value="${c.pe}"></td>
+    </tr>`;
+  }).join('');
+}
+
+// ============================
+// SCENARIO MANAGEMENT
+// ============================
+function captureCurrentScenario() {
+  scenarios[currentScenario] = getAllInputs();
+}
+function loadScenario(name) {
+  if (scenarios[name] && Object.keys(scenarios[name]).length) {
+    setAllInputs(scenarios[name]);
+  }
+  currentScenario = name;
+  document.querySelectorAll('.scenario-btn').forEach(b => b.classList.toggle('active', b.dataset.scen === name));
+  recalcAll();
+}
+function applyScenarioDelta(name) {
+  // Apply delta to current base-like values
+  const deltas = SCENARIO_DELTAS[name] || {};
+  const base = scenarios.base && Object.keys(scenarios.base).length ? scenarios.base : getAllInputs();
+  const newVals = { ...base };
+  Object.entries(deltas).forEach(([k, d]) => {
+    const v = parseFloat(base[k]);
+    if (!isNaN(v)) newVals[k] = (v + d).toString();
+  });
+  setAllInputs(newVals);
+}
+
+// ============================
+// SUPABASE
+// ============================
 function openSetup() { document.getElementById('setupModal').classList.add('show'); }
 function closeSetup() { document.getElementById('setupModal').classList.remove('show'); }
 
@@ -789,15 +1076,15 @@ async function connectSupabase() {
 
 async function saveToSupabase() {
   if (!sbClient) { openSetup(); return; }
-  const premissas = getAllInputs();
+  captureCurrentScenario();
   try {
     if (currentModelId) {
-      await sbClient.from('valuation_models').update({ premissas, updated_at: new Date().toISOString() }).eq('id', currentModelId);
+      await sbClient.from('valuation_models').update({ scenarios, updated_at: new Date().toISOString() }).eq('id', currentModelId);
     } else {
-      const { data } = await sbClient.from('valuation_models').insert({ name: 'Modelo Padrão', premissas }).select().single();
+      const { data } = await sbClient.from('valuation_models').insert({ name: 'Modelo Padrão', scenarios }).select().single();
       if (data) currentModelId = data.id;
     }
-    toast('Modelo salvo', 'success');
+    toast('Cenários salvos', 'success');
   } catch(e) { toast('Erro ao salvar: ' + e.message, 'danger'); }
 }
 
@@ -805,10 +1092,10 @@ async function loadFromSupabase() {
   if (!sbClient) return;
   try {
     const { data } = await sbClient.from('valuation_models').select('*').order('updated_at', { ascending: false }).limit(1).single();
-    if (data) {
+    if (data && data.scenarios) {
       currentModelId = data.id;
-      setAllInputs(data.premissas);
-      recalcAll();
+      scenarios = data.scenarios;
+      loadScenario(currentScenario);
       toast('Modelo carregado', 'success');
     }
   } catch(e) { /* no data yet */ }
@@ -833,75 +1120,159 @@ function toast(msg, type='success') {
   setTimeout(() => t.remove(), 3700);
 }
 
-function calcWACC() {
-  const rf = getVal('rf')/100, erp = getVal('erp')/100;
-  const bu = getVal('beta_u'), de = getVal('de_target'), tax = getVal('tax_rate')/100;
-  const kd_bruto = getVal('kd_bruto')/100;
-  const bl = bu * (1 + (1-tax)*de);
-  const ke = rf + bl * erp;
-  const kd_pos = kd_bruto * (1-tax);
-  const we = 1/(1+de), wd = de/(1+de);
-  const wacc = we*ke + wd*kd_pos;
-  document.getElementById('beta_l').textContent = bl.toFixed(4);
-  document.getElementById('ke_val').textContent = fmtP(ke);
-  document.getElementById('kd_pos').textContent = fmtP(kd_pos);
-  document.getElementById('wacc_val').textContent = fmtP(wacc);
-  return { rf, erp, bu, bl, ke, kd_bruto, kd_pos, we, wd, wacc, tax, de };
+// ============================
+// CALCULATIONS
+// ============================
+function calcInflationCoherence(writeDOM = true) {
+  const inf = getVal('inflacao')/100;
+  const g_real = getVal('g_real')/100;
+  const g_nom = (1+inf)*(1+g_real) - 1;
+  if (writeDOM) document.getElementById('g_nominal').textContent = fmtP(g_nom, 2);
+  return { inf, g_real, g_nom };
 }
 
-function calcComps() {
-  const evs=[], revs=[], pes=[];
-  for (let i=1; i<=5; i++) {
-    evs.push(getVal(`comp${i}_ev`));
-    revs.push(getVal(`comp${i}_rev`));
-    pes.push(getVal(`comp${i}_pe`));
+function calcNWC(writeDOM = true) {
+  const dso = getVal('dso'), dio = getVal('dio'), dpo = getVal('dpo');
+  const cogs_pct = getVal('cogs')/100;
+  // NWC % Receita = DSO/360 + DIO×CMV/360 - DPO×CMV/360 (todos / receita)
+  const nwc_pct = dso/360 + (dio - dpo) * cogs_pct / 360;
+  if (writeDOM) document.getElementById('nwc_pct').textContent = fmtP(nwc_pct, 2);
+  return { dso, dio, dpo, cogs_pct, nwc_pct };
+}
+
+function calcComps(writeDOM = true) {
+  const tax = getVal('tax_rate')/100;
+  const de_target = getVal('de_target');
+  const compsData = [];
+  let bls = [], bus = [], des = [], evs = [], revs = [], pes = [];
+  for (let i = 1; i <= 5; i++) {
+    const bl = getVal(`comp${i}_bl`);
+    const de = getVal(`comp${i}_de`);
+    const bu = bl / (1 + (1-tax)*de); // Hamada unlever
+    const ev = getVal(`comp${i}_ev`);
+    const rev = getVal(`comp${i}_rev`);
+    const pe = getVal(`comp${i}_pe`);
+    if (writeDOM) {
+      const cell = document.getElementById(`comp${i}_bu`);
+      if (cell) cell.textContent = bu.toFixed(3);
+    }
+    bls.push(bl); des.push(de); bus.push(bu); evs.push(ev); revs.push(rev); pes.push(pe);
+    compsData.push({ bl, de, bu, ev, rev, pe });
   }
+  const med_bl = median(bls), med_de = median(des), med_bu = median(bus);
   const med_ev = median(evs), med_rev = median(revs), med_pe = median(pes);
-  document.getElementById('comp_med_ev').textContent = fmtX(med_ev);
-  document.getElementById('comp_med_rev').textContent = fmtX(med_rev);
-  document.getElementById('comp_med_pe').textContent = fmtX(med_pe);
-  return { evs, revs, pes, med_ev, med_rev, med_pe,
+
+  // Realavancagem com D/E target
+  const beta_l_relevered = med_bu * (1 + (1-tax)*de_target);
+
+  if (writeDOM) {
+    document.getElementById('comp_med_bl').textContent = med_bl.toFixed(3);
+    document.getElementById('comp_med_de').textContent = med_de.toFixed(2);
+    document.getElementById('comp_med_bu').textContent = med_bu.toFixed(3);
+    document.getElementById('comp_med_ev').textContent = fmtX(med_ev);
+    document.getElementById('comp_med_rev').textContent = fmtX(med_rev);
+    document.getElementById('comp_med_pe').textContent = fmtX(med_pe);
+  }
+
+  return {
+    compsData, med_bl, med_de, med_bu, beta_l_relevered,
+    med_ev, med_rev, med_pe,
     min_ev: Math.min(...evs), max_ev: Math.max(...evs),
     min_rev: Math.min(...revs), max_rev: Math.max(...revs),
     min_pe: Math.min(...pes), max_pe: Math.max(...pes)
   };
 }
 
-function calcDivLiq() {
+function calcWACC(comps, writeDOM = true) {
+  const rf = getVal('rf')/100, erp = getVal('erp')/100;
+  const de = getVal('de_target'), tax = getVal('tax_rate')/100;
+  const kd_bruto = getVal('kd_bruto')/100;
+  const bl = comps.beta_l_relevered;
+  const ke = rf + bl * erp;
+  const kd_pos = kd_bruto * (1-tax);
+  const we = 1/(1+de), wd = de/(1+de);
+  const wacc = we*ke + wd*kd_pos;
+  if (writeDOM) {
+    document.getElementById('beta_u_med').textContent = comps.med_bu.toFixed(3);
+    document.getElementById('beta_l').textContent = bl.toFixed(4);
+    document.getElementById('ke_val').textContent = fmtP(ke, 2);
+    document.getElementById('kd_pos').textContent = fmtP(kd_pos, 2);
+    document.getElementById('wacc_val').textContent = fmtP(wacc, 2);
+  }
+  return { rf, erp, bl, ke, kd_bruto, kd_pos, we, wd, wacc, tax, de };
+}
+
+function calcDivLiq(writeDOM = true) {
   const d = getVal('divida_bruta') - getVal('caixa');
-  document.getElementById('div_liq').textContent = fmtN(d);
+  if (writeDOM) document.getElementById('div_liq').textContent = fmtN(d);
   return d;
 }
 
-function calcDCF(w) {
+function calcDCF(w, nwc, infl) {
   const receita0 = getVal('receita_base');
   const growths = [0, getVal('g1')/100, getVal('g2')/100, getVal('g3')/100, getVal('g4')/100, getVal('g5')/100];
   const margins = [getVal('m0')/100, getVal('m1')/100, getVal('m2')/100, getVal('m3')/100, getVal('m4')/100, getVal('m5')/100];
   const da_pct = getVal('da_pct')/100;
   const capex_pcts = [getVal('capex0')/100, getVal('capex1')/100, getVal('capex2')/100, getVal('capex3')/100, getVal('capex4')/100, getVal('capex5')/100];
-  const wcap = getVal('wcap_pct')/100;
+  const capex_perp_pct = getVal('capex_perp')/100;
   const tax = w.tax;
   const wacc = w.wacc;
-  const g_perp = getVal('g_perp')/100;
+  const g_perp = infl.g_nom; // NOMINAL g
   const exit_mult = getVal('exit_mult');
   const div_liq = getVal('divida_bruta') - getVal('caixa');
   const acoes = getVal('acoes');
+  const nols_inicial = getVal('nols');
 
   const receitas = [receita0];
   for (let i=1; i<=5; i++) receitas.push(receitas[i-1]*(1+growths[i]));
   const ebitdas = receitas.map((r,i) => r*margins[i]);
   const das = receitas.map(r => r*da_pct);
   const ebits = ebitdas.map((e,i) => e - das[i]);
-  const nopats = ebits.map(e => e*(1-tax));
+
+  // NWC values per year (R$) + ΔNWC
+  const nwcs = receitas.map(r => r * nwc.nwc_pct);
+  const delta_wc = nwcs.map((n,i) => i===0 ? 0 : n - nwcs[i-1]);
+
+  // Tax with NOL utilization
+  let nols_remaining = nols_inicial;
+  const taxes = [];
+  const nopats = [];
+  for (let i = 0; i < 6; i++) {
+    if (i === 0) {
+      taxes.push(ebits[i]*tax);
+      nopats.push(ebits[i] - taxes[i]);
+      continue;
+    }
+    let taxable = ebits[i];
+    let nol_used = 0;
+    if (taxable > 0 && nols_remaining > 0) {
+      nol_used = Math.min(taxable, nols_remaining);
+      taxable -= nol_used;
+      nols_remaining -= nol_used;
+    }
+    const t = taxable > 0 ? taxable * tax : 0;
+    taxes.push(t);
+    nopats.push(ebits[i] - t);
+  }
+
   const capexs = receitas.map((r,i) => r*capex_pcts[i]);
-  const delta_wc = receitas.map((r,i) => i===0 ? 0 : (r - receitas[i-1])*wcap);
   const fcffs = nopats.map((n,i) => n + das[i] - capexs[i] - delta_wc[i]);
 
   const factors = [1];
   for (let i=1; i<=5; i++) factors.push(1/Math.pow(1+wacc, i));
   const vp_fcffs = fcffs.map((f,i) => f*factors[i]);
 
-  const tv_gordon = fcffs[5]*(1+g_perp)/(wacc - g_perp);
+  // Steady-state FCFF for perpetuity: usa CAPEX_perp em vez do CAPEX do ano 5
+  const receita_perp = receitas[5]*(1+g_perp);
+  const ebitda_perp_ss = receita_perp * margins[5];
+  const da_perp_ss = receita_perp * da_pct;
+  const ebit_perp_ss = ebitda_perp_ss - da_perp_ss;
+  const nopat_perp_ss = ebit_perp_ss * (1 - tax);
+  const capex_perp_ss = receita_perp * capex_perp_pct;
+  const dwc_perp_ss = (receita_perp - receitas[5]) * nwc.nwc_pct;
+  const fcff_perp_ss = nopat_perp_ss + da_perp_ss - capex_perp_ss - dwc_perp_ss;
+
+  const tv_gordon = fcff_perp_ss / (wacc - g_perp);
   const vp_tv_gordon = tv_gordon * factors[5];
   const tv_exit = ebitdas[5]*exit_mult;
   const vp_tv_exit = tv_exit * factors[5];
@@ -914,41 +1285,49 @@ function calcDCF(w) {
   const preco = equity / acoes;
   const tv_pct = vp_tv_gordon / ev_gordon;
 
-  return { receitas, ebitdas, das, ebits, nopats, capexs, delta_wc, fcffs,
-    factors, vp_fcffs, tv_gordon, vp_tv_gordon, tv_exit, vp_tv_exit,
-    sum_vp, ev_gordon, ev_exit, ev_avg, equity, preco, tv_pct,
-    wacc, g_perp, exit_mult, div_liq, acoes, growths, margins, tax };
+  // Implied multiple
+  const implied_mult = ev_gordon / ebitdas[0];
+
+  return { receitas, ebitdas, das, ebits, nopats, taxes, capexs, delta_wc, nwcs, fcffs,
+    factors, vp_fcffs, fcff_perp_ss, tv_gordon, vp_tv_gordon, tv_exit, vp_tv_exit,
+    sum_vp, ev_gordon, ev_exit, ev_avg, equity, preco, tv_pct, implied_mult,
+    wacc, g_perp, exit_mult, div_liq, acoes, growths, margins, tax, nwc_pct: nwc.nwc_pct,
+    capex_perp_pct, da_pct, capex_pcts, nols_remaining };
 }
 
 function calcMultiplos(dcf, comps) {
-  const receita1 = dcf.receitas[1];
-  const ebitda1 = dcf.ebitdas[1];
-  const nopat1 = dcf.nopats[1];
-  const juros = dcf.div_liq > 0 ? dcf.div_liq * (getVal('kd_bruto')/100) : 0;
-  const ll = nopat1 - juros*(1-dcf.tax);
   const div_liq = dcf.div_liq;
   const acoes = dcf.acoes;
 
-  const ev_ebitda = ebitda1 * comps.med_ev;
-  const ev_rev = receita1 * comps.med_rev;
-  const ev_pe_impl = ll * comps.med_pe + div_liq;
+  // Apply on three reference points: LTM (Y0), NTM (Y1), FY+1 (Y2)
+  const periods = [
+    { label: 'LTM (Ano 0)', rev: dcf.receitas[0], ebitda: dcf.ebitdas[0], nopat: dcf.nopats[0] },
+    { label: 'NTM (Ano 1)', rev: dcf.receitas[1], ebitda: dcf.ebitdas[1], nopat: dcf.nopats[1] },
+    { label: 'FY+1 (Ano 2)', rev: dcf.receitas[2], ebitda: dcf.ebitdas[2], nopat: dcf.nopats[2] },
+  ];
 
-  const eq_ebitda = ev_ebitda - div_liq;
-  const eq_rev = ev_rev - div_liq;
-  const eq_pe = ll * comps.med_pe;
+  const kd_bruto = getVal('kd_bruto')/100;
+  const results = periods.map(p => {
+    const juros = div_liq > 0 ? div_liq * kd_bruto : 0;
+    const ll = p.nopat - juros*(1-dcf.tax);
+    return {
+      label: p.label,
+      rev: p.rev, ebitda: p.ebitda, ll: ll,
+      ev_ebitda: p.ebitda * comps.med_ev,
+      ev_rev: p.rev * comps.med_rev,
+      eq_ebitda: p.ebitda * comps.med_ev - div_liq,
+      eq_rev: p.rev * comps.med_rev - div_liq,
+      eq_pe: ll * comps.med_pe,
+    };
+  });
 
   return {
-    receita1, ebitda1, ll, div_liq, acoes,
-    ev_ebitda, ev_rev, ev_pe_impl,
-    eq_ebitda, eq_rev, eq_pe,
-    preco_ebitda: eq_ebitda/acoes,
-    preco_rev: eq_rev/acoes,
-    preco_pe: eq_pe/acoes,
-    ev_avg: (ev_ebitda+ev_rev+ev_pe_impl)/3,
-    eq_avg: (eq_ebitda+eq_rev+eq_pe)/3,
-    ev_ebitda_min: ebitda1*comps.min_ev, ev_ebitda_max: ebitda1*comps.max_ev,
-    ev_rev_min: receita1*comps.min_rev, ev_rev_max: receita1*comps.max_rev,
-    ev_pe_min: ll*comps.min_pe+div_liq, ev_pe_max: ll*comps.max_pe+div_liq,
+    periods: results, div_liq, acoes,
+    // Range data based on NTM (most common reference)
+    ev_ebitda_min: dcf.ebitdas[1]*comps.min_ev, ev_ebitda_max: dcf.ebitdas[1]*comps.max_ev,
+    ev_rev_min: dcf.receitas[1]*comps.min_rev, ev_rev_max: dcf.receitas[1]*comps.max_rev,
+    // P/E only equity
+    eq_pe_min: results[1].ll * comps.min_pe, eq_pe_max: results[1].ll * comps.max_pe,
   };
 }
 
@@ -956,21 +1335,35 @@ function calcLBO(dcf) {
   const ebitda0 = dcf.ebitdas[0];
   const entry_mult = getVal('lbo_entry_mult');
   const exit_mult_lbo = getVal('lbo_exit_mult');
-  const leverage = getVal('lbo_leverage');
-  const kd_lbo = getVal('lbo_kd')/100;
+  const lev_tlb = getVal('lbo_lev_tlb');
+  const lev_mezz = getVal('lbo_lev_mezz');
+  const kd_tlb = getVal('lbo_kd_tlb')/100;
+  const kd_mezz = getVal('lbo_kd_mezz')/100;
+  const amort_tlb_pct = getVal('lbo_amort_tlb')/100;
   const fees_pct = getVal('lbo_fees')/100;
-  const amort_pct = getVal('lbo_amort_pct')/100;
+  const sweep_pct = getVal('lbo_amort_pct')/100;
+  const cov_lev = getVal('lbo_cov_lev');
+  const cov_icr = getVal('lbo_cov_icr');
+  const div_recap_pct = getVal('lbo_div_recap')/100;
 
   const ev_entry = ebitda0 * entry_mult;
   const fees = ev_entry * fees_pct;
   const divida_exist = getVal('divida_bruta');
   const caixa_exist = getVal('caixa');
   const total_uses = ev_entry + fees + divida_exist - caixa_exist;
-  const nova_divida = ebitda0 * leverage;
-  const equity_sponsor = total_uses - nova_divida;
+  const tlb_inicial = ebitda0 * lev_tlb;
+  const mezz_inicial = ebitda0 * lev_mezz;
+  const total_debt_inicial = tlb_inicial + mezz_inicial;
+  const equity_sponsor = total_uses - total_debt_inicial;
 
-  const saldos = [nova_divida];
-  const juros_arr = [], amort_arr = [], ll_arr = [], fcf_arr = [];
+  // Schedules
+  const tlb_saldos = [tlb_inicial];
+  const mezz_saldos = [mezz_inicial];
+  const juros_tlb_arr = [], juros_mezz_arr = [];
+  const amort_tlb_mand = [], amort_tlb_sweep = [], amort_mezz_arr = [];
+  const ll_arr = [], fcf_arr = [], icr_arr = [], net_lev_arr = [], cov_breach = [];
+  const equity_cf = [-equity_sponsor]; // Year 0 = -equity invested
+
   const ebitdas = dcf.ebitdas.slice(1);
   const das_arr = dcf.das.slice(1);
   const capexs = dcf.capexs.slice(1);
@@ -978,88 +1371,164 @@ function calcLBO(dcf) {
   const tax = dcf.tax;
 
   for (let i=0; i<5; i++) {
-    const saldo_ini = saldos[i];
-    const juros = saldo_ini * kd_lbo;
+    const tlb_ini = tlb_saldos[i];
+    const mezz_ini = mezz_saldos[i];
+    const j_tlb = tlb_ini * kd_tlb;
+    const j_mezz = mezz_ini * kd_mezz;
+    const total_juros = j_tlb + j_mezz;
+
     const ebit = ebitdas[i] - das_arr[i];
-    const ebt = ebit - juros;
-    const ir = ebt > 0 ? ebt*tax : 0;
+    const ebt = ebit - total_juros;
+    const ir = ebt > 0 ? ebt * tax : 0;
     const ll = ebt - ir;
     const fcf = ll + das_arr[i] - capexs[i] - dwc[i];
-    const amort = Math.min(fcf * amort_pct, saldo_ini);
-    const saldo_fim = saldo_ini - amort;
-    juros_arr.push(juros);
-    amort_arr.push(amort);
+
+    // Mandatory TLB amortization
+    const am_tlb_mand = Math.min(tlb_ini * amort_tlb_pct, tlb_ini);
+    let cash_after_mand = fcf - am_tlb_mand;
+
+    // Sweep (cash_after_mand × sweep_pct goes to TLB first, then mezz if TLB paid off)
+    let am_tlb_sweep_v = 0, am_mezz_v = 0;
+    if (cash_after_mand > 0) {
+      const sweep_amount = cash_after_mand * sweep_pct;
+      const tlb_remaining = tlb_ini - am_tlb_mand;
+      am_tlb_sweep_v = Math.min(sweep_amount, tlb_remaining);
+      const remaining = sweep_amount - am_tlb_sweep_v;
+      am_mezz_v = Math.min(remaining, mezz_ini);
+    }
+
+    const tlb_fim = tlb_ini - am_tlb_mand - am_tlb_sweep_v;
+    const mezz_fim = mezz_ini - am_mezz_v;
+
+    juros_tlb_arr.push(j_tlb);
+    juros_mezz_arr.push(j_mezz);
+    amort_tlb_mand.push(am_tlb_mand);
+    amort_tlb_sweep.push(am_tlb_sweep_v);
+    amort_mezz_arr.push(am_mezz_v);
     ll_arr.push(ll);
     fcf_arr.push(fcf);
-    saldos.push(saldo_fim);
+
+    const total_fim = tlb_fim + mezz_fim;
+    const net_lev = total_fim / ebitdas[i];
+    const icr = total_juros > 0 ? ebitdas[i] / total_juros : 99;
+    icr_arr.push(icr);
+    net_lev_arr.push(net_lev);
+    const breach = (net_lev > cov_lev) || (icr < cov_icr);
+    cov_breach.push(breach);
+
+    tlb_saldos.push(tlb_fim);
+    mezz_saldos.push(mezz_fim);
+
+    // Dividend recap at year 3
+    let div_cf = 0;
+    if (i === 2 && div_recap_pct > 0) {
+      div_cf = equity_sponsor * div_recap_pct;
+    }
+    equity_cf.push(div_cf);
   }
 
   const ebitda_exit = dcf.ebitdas[5];
   const ev_exit = ebitda_exit * exit_mult_lbo;
-  const divida_rem = saldos[5];
-  const equity_exit = ev_exit - divida_rem;
-  const moic = equity_exit / equity_sponsor;
-  const irr = Math.pow(moic, 1/5) - 1;
+  const total_debt_exit = tlb_saldos[5] + mezz_saldos[5];
+  const equity_exit = ev_exit - total_debt_exit;
+  equity_cf[5] = (equity_cf[5] || 0) + equity_exit;
+
+  const moic = (equity_cf.slice(1).reduce((a,b)=>a+b,0)) / equity_sponsor;
+  const irr_v = irr(equity_cf, 0.2);
+
+  // Decomposition: EBITDA growth, Multiple Δ, Deleveraging
+  // Reference: ev_entry = ebitda0 × entry_mult
+  // EV exit = ebitda_exit × exit_mult
+  // Δ EV from growth (holding entry mult): (ebitda_exit - ebitda0) × entry_mult
+  // Δ EV from multiple change (on exit ebitda): ebitda_exit × (exit_mult - entry_mult)
+  // Deleveraging: (total_debt_inicial - total_debt_exit)
+  const delta_growth = (ebitda_exit - ebitda0) * entry_mult;
+  const delta_multiple = ebitda_exit * (exit_mult_lbo - entry_mult);
+  const delta_delev = total_debt_inicial - total_debt_exit;
+  const total_delta = delta_growth + delta_multiple + delta_delev;
 
   return {
-    ebitda0, entry_mult, exit_mult_lbo, leverage, kd_lbo, fees_pct, amort_pct,
+    ebitda0, entry_mult, exit_mult_lbo,
+    lev_tlb, lev_mezz, kd_tlb, kd_mezz,
     ev_entry, fees, divida_exist, caixa_exist, total_uses,
-    nova_divida, equity_sponsor,
-    saldos, juros_arr, amort_arr, ll_arr, fcf_arr,
-    ebitda_exit, ev_exit, divida_rem, equity_exit, moic, irr,
-    ebitdas, das_arr, capexs, dwc, tax
+    tlb_inicial, mezz_inicial, total_debt_inicial, equity_sponsor,
+    tlb_saldos, mezz_saldos,
+    juros_tlb_arr, juros_mezz_arr,
+    amort_tlb_mand, amort_tlb_sweep, amort_mezz_arr,
+    ll_arr, fcf_arr, icr_arr, net_lev_arr, cov_breach,
+    ebitda_exit, ev_exit, total_debt_exit, equity_exit,
+    moic, irr: irr_v, equity_cf,
+    delta_growth, delta_multiple, delta_delev, total_delta,
+    cov_lev, cov_icr, div_recap_pct,
+    ebitdas, das_arr, capexs, dwc, tax, sweep_pct, fees_pct
   };
 }
 
-function renderDCF(dcf) {
+// ============================
+// RENDER — DCF
+// ============================
+function renderDCF(dcf, comps, infl) {
   const years = ['2023','2024','2025','2026','2027','2028'];
+
   document.getElementById('dcf-kpis').innerHTML = `
-    <div class="kpi kpi-gold"><div class="kpi-label">EV (Gordon)</div><div class="kpi-value">${fmtR(dcf.ev_gordon)}</div></div>
-    <div class="kpi kpi-silver"><div class="kpi-label">EV (Múltiplo)</div><div class="kpi-value">${fmtR(dcf.ev_exit)}</div></div>
+    <div class="kpi kpi-gold"><div class="kpi-label">EV (Gordon)</div><div class="kpi-value">${fmtR(dcf.ev_gordon)}</div><div class="kpi-sub">g_nom = ${fmtP(dcf.g_perp,2)}</div></div>
+    <div class="kpi kpi-silver"><div class="kpi-label">EV (Múltiplo)</div><div class="kpi-value">${fmtR(dcf.ev_exit)}</div><div class="kpi-sub">${dcf.exit_mult}x EV/EBITDA</div></div>
     <div class="kpi kpi-gold"><div class="kpi-label">Equity Value</div><div class="kpi-value">${fmtR(dcf.equity)}</div></div>
     <div class="kpi kpi-silver"><div class="kpi-label">Preço/Ação</div><div class="kpi-value">R$ ${dcf.preco.toFixed(2)}</div></div>
     <div class="kpi kpi-warn"><div class="kpi-label">% TV/EV (Gordon)</div><div class="kpi-value">${fmtP(dcf.tv_pct)}</div></div>
   `;
 
+  // Alerts
+  const alertsEl = document.getElementById('dcf-alerts');
+  let alerts = '';
+  if (dcf.tv_pct > 0.75) alerts += `<div class="alert">⚠ <strong>TV/EV elevado</strong> (${fmtP(dcf.tv_pct)}). Quando o terminal value representa &gt;75% do EV, o resultado fica muito sensível à perpetuidade. Considere estender o período explícito.</div>`;
+  if (dcf.wacc - dcf.g_perp < 0.03) alerts += `<div class="alert danger">⚠ <strong>Spread WACC−g muito apertado</strong> (${fmtP(dcf.wacc-dcf.g_perp)}). Spreads &lt;3pp inflam o TV de Gordon artificialmente.</div>`;
+  alertsEl.innerHTML = alerts;
+
+  // DRE
   const rows = [
-    ['Receita líquida', dcf.receitas, fmtN],
-    ['  Crescimento (%)', [null,...dcf.growths.slice(1).map((g,i)=>dcf.growths[i+1])], (v)=>v==null?'—':fmtP(v)],
-    ['EBITDA', dcf.ebitdas, fmtN],
-    ['  Margem EBITDA', dcf.margins, (v)=>fmtP(v)],
-    ['(-) D&A', dcf.das.map(v=>-v), fmtN],
-    ['EBIT', dcf.ebits, fmtN],
-    ['(-) IR sobre EBIT', dcf.ebits.map(e=>-e*dcf.tax), fmtN],
-    ['NOPAT', dcf.nopats, fmtN],
+    ['Receita líquida', dcf.receitas, fmtN, false, false],
+    ['Crescimento (%)', [null,...dcf.growths.slice(1)], (v)=>v==null?'—':fmtP(v), false, true],
+    ['EBITDA', dcf.ebitdas, fmtN, false, false],
+    ['Margem EBITDA', dcf.margins, (v)=>fmtP(v), false, true],
+    ['(-) D&A', dcf.das.map(v=>-v), fmtN, false, false],
+    ['EBIT', dcf.ebits, fmtN, false, false],
+    ['(-) Impostos', dcf.taxes.map(v=>-v), fmtN, false, false],
+    ['NOPAT', dcf.nopats, fmtN, false, false],
     ['sep'],
-    ['(+) D&A', dcf.das, fmtN],
-    ['(-) CAPEX', dcf.capexs.map(v=>-v), fmtN],
-    ['(-) Δ Cap. Giro', dcf.delta_wc.map(v=>-v), fmtN],
-    ['FCFF', dcf.fcffs, fmtN, true],
+    ['(+) D&A', dcf.das, fmtN, false, false],
+    ['(-) CAPEX', dcf.capexs.map(v=>-v), fmtN, false, false],
+    ['(-) Δ NWC', dcf.delta_wc.map(v=>-v), fmtN, false, false],
+    ['NWC absoluto', dcf.nwcs, fmtN, false, true],
+    ['FCFF', dcf.fcffs, fmtN, true, false],
     ['sep'],
-    ['Fator desconto', dcf.factors, (v)=>v.toFixed(4)],
-    ['VP do FCFF', dcf.vp_fcffs, fmtN],
+    ['Fator desconto', dcf.factors, (v)=>v.toFixed(4), false, true],
+    ['VP do FCFF', dcf.vp_fcffs, fmtN, false, false],
   ];
 
   let html = `<thead><tr><th></th>${years.map(y=>`<th class="num">${y}</th>`).join('')}</tr></thead><tbody>`;
   rows.forEach(r => {
     if (r[0]==='sep') { html += '<tr><td colspan="7" style="height:4px;border-bottom:1px solid var(--border)"></td></tr>'; return; }
-    const cls = r[3] ? ' class="row-result"' : '';
-    html += `<tr${cls}><td class="row-label">${r[0]}</td>`;
+    const cls = r[3] ? ' class="row-result"' : (r[4] ? ' class="row-sublabel-row"' : '');
+    const labelCls = r[4] ? 'row-sublabel' : 'row-label';
+    html += `<tr${cls}><td class="${labelCls}">${r[0]}</td>`;
     for (let i=0; i<6; i++) html += `<td class="num">${r[2](r[1][i])}</td>`;
     html += '</tr>';
   });
   html += '</tbody>';
   document.getElementById('tblDCF').innerHTML = html;
 
+  // EV table
   const evRows = [
     ['Σ VP FCFF (1-5)', dcf.sum_vp],
+    ['FCFF perpétuo (steady-state)', dcf.fcff_perp_ss],
     ['TV Gordon', dcf.tv_gordon],
     ['VP TV Gordon', dcf.vp_tv_gordon],
-    ['EV (Gordon)', dcf.ev_gordon],
+    ['EV (Gordon)', dcf.ev_gordon, true],
     ['sep'],
     ['TV Exit Multiple', dcf.tv_exit],
     ['VP TV Exit', dcf.vp_tv_exit],
-    ['EV (Múltiplo)', dcf.ev_exit],
+    ['EV (Múltiplo)', dcf.ev_exit, true],
     ['sep'],
     ['EV médio', dcf.ev_avg],
     ['(-) Dívida líquida', -dcf.div_liq],
@@ -1077,6 +1546,7 @@ function renderDCF(dcf) {
   document.getElementById('tblEV').innerHTML = html;
 
   renderSensDCF(dcf);
+  renderCrossChecks(dcf, comps);
   renderChartDCF(dcf);
 }
 
@@ -1084,24 +1554,84 @@ function renderSensDCF(dcf) {
   const wacc_base = dcf.wacc;
   const g_base = dcf.g_perp;
   const waccs = [-0.02,-0.01,0,0.01,0.02].map(d=>wacc_base+d);
-  const gs = [0.02,0.03,0.04,0.05,0.06];
-  let html = '<table class="sens-table"><thead><tr><th>WACC \\ g →</th>';
-  gs.forEach(g => html += `<th>${fmtP(g)}</th>`);
+  const gs = [-0.02,-0.01,0,0.01,0.02].map(d=>g_base+d);
+  let html = '<table class="sens-table"><thead><tr><th>WACC \\ g_nom →</th>';
+  gs.forEach(g => html += `<th>${fmtP(g,1)}</th>`);
   html += '</tr></thead><tbody>';
   waccs.forEach(w => {
-    html += `<tr><th>${fmtP(w)}</th>`;
+    html += `<tr><th>${fmtP(w,1)}</th>`;
     gs.forEach(g => {
-      const tv = dcf.fcffs[5]*(1+g)/(w-g);
-      const vp = tv / Math.pow(1+w,5);
-      const ev = dcf.sum_vp + vp;
+      const tv = dcf.fcff_perp_ss * (1+g)/((1+dcf.g_perp)) / (w-g); // adjust steady-state FCFF for new g
+      // Simpler: recalc FCFF perp at new g
+      const adjusted_fcff = dcf.fcff_perp_ss * (1+g)/(1+dcf.g_perp);
+      const tv2 = w > g ? adjusted_fcff / (w - g) : NaN;
+      const vp = isNaN(tv2) ? NaN : tv2 / Math.pow(1+w, 5);
+      const ev = isNaN(vp) ? NaN : dcf.sum_vp + vp;
       const isCurrent = Math.abs(w-wacc_base)<0.001 && Math.abs(g-g_base)<0.001;
-      const cls = isCurrent ? 'cell-current' : ev > dcf.ev_gordon*1.1 ? 'cell-high' : ev < dcf.ev_gordon*0.9 ? 'cell-low' : 'cell-mid';
-      html += `<td class="${cls}">${fmt(ev)}</td>`;
+      const cls = isCurrent ? 'cell-current' : (ev > dcf.ev_gordon*1.1 ? 'cell-high' : ev < dcf.ev_gordon*0.9 ? 'cell-low' : 'cell-mid');
+      html += `<td class="${cls}">${isNaN(ev)?'n/a':fmt(ev)}</td>`;
     });
     html += '</tr>';
   });
   html += '</tbody></table>';
   document.getElementById('sensDCF').innerHTML = html;
+}
+
+function renderCrossChecks(dcf, comps) {
+  let html = '';
+
+  // Check 1: Implied EV/EBITDA from DCF vs comps range
+  const impl_mult = dcf.implied_mult;
+  const within = impl_mult >= comps.min_ev && impl_mult <= comps.max_ev;
+  const cls1 = within ? 'success' : 'danger';
+  const status1 = within ? '✓ dentro do range' : '⚠ fora do range';
+  html += `<div class="alert ${cls1}">
+    <strong>Múltiplo implícito DCF / EBITDA Y0:</strong> ${fmtX(impl_mult)} ${status1} dos comparáveis (${fmtX(comps.min_ev)}–${fmtX(comps.max_ev)}, mediana ${fmtX(comps.med_ev)}).
+    ${!within ? '<br><span style="font-size:0.78rem">DCF está implicando um múltiplo divergente dos comparáveis. Revisar premissas de WACC, g ou margens.</span>' : ''}
+  </div>`;
+
+  // Check 2: TV concentration
+  if (dcf.tv_pct > 0.65) {
+    html += `<div class="alert">
+      <strong>Concentração no TV:</strong> ${fmtP(dcf.tv_pct)} do EV vem da perpetuidade. Período explícito de 5 anos pode ser curto demais para esta empresa em estágio de crescimento.
+    </div>`;
+  }
+
+  // Check 3: CAPEX vs D&A coherence
+  const capex_y5 = dcf.capex_pcts[5];
+  const capex_perp = dcf.capex_perp_pct;
+  const da_pct = dcf.da_pct;
+  if (Math.abs(capex_perp - da_pct) > 0.01) {
+    html += `<div class="alert">
+      <strong>CAPEX perpétuo ≠ D&A:</strong> CAPEX_perp = ${fmtP(capex_perp,1)} vs D&A = ${fmtP(da_pct,1)}. Em steady-state, CAPEX deveria igualar D&A para evitar crescimento eterno da base de ativos.
+    </div>`;
+  } else {
+    html += `<div class="alert success"><strong>✓ Steady-state OK:</strong> CAPEX_perp = D&A = ${fmtP(da_pct,1)} da receita.</div>`;
+  }
+
+  // Check 4: Implied growth in multiples
+  // What growth (Gordon) is implied if we use median exit multiple?
+  const ev_at_med = dcf.ebitdas[0] * comps.med_ev;
+  // EV = Σ VP FCFF + FCFF_perp/(WACC-g) / (1+WACC)^5
+  // ev_at_med - sum_vp = FCFF_perp_ss × (1+g)/(1+g_current) / (WACC - g) / (1+WACC)^5
+  // implícito g
+  const target_vp_tv = ev_at_med - dcf.sum_vp;
+  if (target_vp_tv > 0) {
+    const target_tv = target_vp_tv * Math.pow(1+dcf.wacc, 5);
+    // target_tv = fcff_perp_ss / (wacc - g_impl)  =>  g_impl = wacc - fcff_perp_ss / target_tv
+    // mas adjusta fcff perp pelo g_impl: assumir 1ª aproximação que fcff_perp não muda muito
+    const g_implied = dcf.wacc - dcf.fcff_perp_ss / target_tv;
+    if (g_implied > -0.1 && g_implied < 0.5) {
+      const reasonable = g_implied > 0 && g_implied < 0.10;
+      const cls4 = reasonable ? 'success' : 'danger';
+      html += `<div class="alert ${cls4}">
+        <strong>g implícito pelos comparáveis:</strong> ${fmtP(g_implied, 2)} ${reasonable ? '✓ razoável' : '⚠ extremo'}.
+        Esse é o g de perpetuidade que tornaria o EV do DCF igual ao EV implicado pela mediana ${fmtX(comps.med_ev)}× EV/EBITDA.
+      </div>`;
+    }
+  }
+
+  document.getElementById('dcf-checks').innerHTML = html;
 }
 
 function renderChartDCF(dcf) {
@@ -1112,12 +1642,8 @@ function renderChartDCF(dcf) {
     data: {
       labels: ['2024','2025','2026','2027','2028'],
       datasets: [
-        { label: 'FCFF', data: dcf.fcffs.slice(1),
-          backgroundColor: 'rgba(201,169,97,0.75)',
-          borderColor: '#e3c789', borderWidth: 1, borderRadius: 2 },
-        { label: 'VP FCFF', data: dcf.vp_fcffs.slice(1),
-          backgroundColor: 'rgba(192,192,200,0.65)',
-          borderColor: '#e0e0e6', borderWidth: 1, borderRadius: 2 },
+        { label: 'FCFF', data: dcf.fcffs.slice(1), backgroundColor: 'rgba(201,169,97,0.75)', borderColor: '#e3c789', borderWidth: 1, borderRadius: 2 },
+        { label: 'VP FCFF', data: dcf.vp_fcffs.slice(1), backgroundColor: 'rgba(192,192,200,0.65)', borderColor: '#e0e0e6', borderWidth: 1, borderRadius: 2 },
       ]
     },
     options: {
@@ -1131,35 +1657,48 @@ function renderChartDCF(dcf) {
   });
 }
 
+// ============================
+// RENDER — MÚLTIPLOS
+// ============================
 function renderMultiplos(mult, comps) {
+  const ntm = mult.periods[1];
   document.getElementById('mult-kpis').innerHTML = `
-    <div class="kpi kpi-gold"><div class="kpi-label">EV/EBITDA → Equity</div><div class="kpi-value">${fmtR(mult.eq_ebitda)}</div></div>
-    <div class="kpi kpi-silver"><div class="kpi-label">EV/Receita → Equity</div><div class="kpi-value">${fmtR(mult.eq_rev)}</div></div>
-    <div class="kpi kpi-gold"><div class="kpi-label">P/E → Equity</div><div class="kpi-value">${fmtR(mult.eq_pe)}</div></div>
-    <div class="kpi kpi-silver"><div class="kpi-label">Média Preço/Ação</div><div class="kpi-value">R$ ${(mult.eq_avg/mult.acoes).toFixed(2)}</div></div>
+    <div class="kpi kpi-gold"><div class="kpi-label">EV/EBITDA → Equity (NTM)</div><div class="kpi-value">${fmtR(ntm.eq_ebitda)}</div></div>
+    <div class="kpi kpi-silver"><div class="kpi-label">EV/Receita → Equity (NTM)</div><div class="kpi-value">${fmtR(ntm.eq_rev)}</div></div>
+    <div class="kpi kpi-gold"><div class="kpi-label">P/E → Equity (NTM)</div><div class="kpi-value">${fmtR(ntm.eq_pe)}</div></div>
+    <div class="kpi kpi-silver"><div class="kpi-label">Média Equity (NTM)</div><div class="kpi-value">${fmtR((ntm.eq_ebitda + ntm.eq_rev + ntm.eq_pe)/3)}</div></div>
   `;
 
-  let html = `<thead><tr><th>Métrica</th><th class="num">Múltiplo (Med.)</th><th class="num">EV Implícito</th><th class="num">Equity Value</th><th class="num">Preço/Ação</th></tr></thead><tbody>`;
-  const rows = [
-    ['EV/EBITDA', fmtX(comps.med_ev), mult.ev_ebitda, mult.eq_ebitda, mult.preco_ebitda],
-    ['EV/Receita', fmtX(comps.med_rev), mult.ev_rev, mult.eq_rev, mult.preco_rev],
-    ['P/E', fmtX(comps.med_pe), mult.ev_pe_impl, mult.eq_pe, mult.preco_pe],
-  ];
-  rows.forEach(r => {
-    html += `<tr><td class="row-label">${r[0]}</td><td class="num">${r[1]}</td><td class="num">${fmtN(r[2])}</td><td class="num">${fmtN(r[3])}</td><td class="num">R$ ${r[4].toFixed(2)}</td></tr>`;
+  let html = `<thead><tr><th>Período</th><th class="num">EV/EBITDA</th><th class="num">EV/Receita</th><th class="num">P/E (Equity)</th><th class="num">Média</th></tr></thead><tbody>`;
+  mult.periods.forEach((p, i) => {
+    const cls = i === 1 ? ' class="row-highlight"' : '';
+    const avg = (p.eq_ebitda + p.eq_rev + p.eq_pe) / 3;
+    html += `<tr${cls}><td class="row-label">${p.label}</td>
+      <td class="num">${fmtN(p.eq_ebitda)}</td>
+      <td class="num">${fmtN(p.eq_rev)}</td>
+      <td class="num">${fmtN(p.eq_pe)}</td>
+      <td class="num">${fmtN(avg)}</td>
+    </tr>`;
   });
-  html += `<tr class="row-result"><td>Média</td><td></td><td class="num">${fmtN(mult.ev_avg)}</td><td class="num">${fmtN(mult.eq_avg)}</td><td class="num">R$ ${(mult.eq_avg/mult.acoes).toFixed(2)}</td></tr>`;
   html += '</tbody>';
   document.getElementById('tblMult').innerHTML = html;
 
-  html = `<thead><tr><th>Métrica</th><th class="num">Múlt. Mín</th><th class="num">Múlt. Máx</th><th class="num">EV Mín</th><th class="num">EV Máx</th></tr></thead><tbody>`;
+  // Range table
+  html = `<thead><tr><th>Métrica</th><th class="num">Múlt. Mín</th><th class="num">Múlt. Med</th><th class="num">Múlt. Máx</th><th class="num">Equity Mín</th><th class="num">Equity Med</th><th class="num">Equity Máx</th></tr></thead><tbody>`;
   const ranges = [
-    ['EV/EBITDA', comps.min_ev, comps.max_ev, mult.ev_ebitda_min, mult.ev_ebitda_max],
-    ['EV/Receita', comps.min_rev, comps.max_rev, mult.ev_rev_min, mult.ev_rev_max],
-    ['P/E (EV aprox.)', comps.min_pe, comps.max_pe, mult.ev_pe_min, mult.ev_pe_max],
+    ['EV/EBITDA (NTM)', comps.min_ev, comps.med_ev, comps.max_ev, mult.ev_ebitda_min - mult.div_liq, ntm.eq_ebitda, mult.ev_ebitda_max - mult.div_liq],
+    ['EV/Receita (NTM)', comps.min_rev, comps.med_rev, comps.max_rev, mult.ev_rev_min - mult.div_liq, ntm.eq_rev, mult.ev_rev_max - mult.div_liq],
+    ['P/E (NTM)', comps.min_pe, comps.med_pe, comps.max_pe, mult.eq_pe_min, ntm.eq_pe, mult.eq_pe_max],
   ];
   ranges.forEach(r => {
-    html += `<tr><td class="row-label">${r[0]}</td><td class="num">${r[1].toFixed(1)}x</td><td class="num">${r[2].toFixed(1)}x</td><td class="num">${fmtN(r[3])}</td><td class="num">${fmtN(r[4])}</td></tr>`;
+    html += `<tr><td class="row-label">${r[0]}</td>
+      <td class="num">${r[1].toFixed(1)}x</td>
+      <td class="num">${r[2].toFixed(1)}x</td>
+      <td class="num">${r[3].toFixed(1)}x</td>
+      <td class="num">${fmtN(r[4])}</td>
+      <td class="num">${fmtN(r[5])}</td>
+      <td class="num">${fmtN(r[6])}</td>
+    </tr>`;
   });
   html += '</tbody>';
   document.getElementById('tblMultRange').innerHTML = html;
@@ -1169,80 +1708,126 @@ function renderMultiplos(mult, comps) {
   chartMultInstance = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: ['EV/EBITDA','EV/Receita','P/E'],
-      datasets: [{ label: 'Equity Value', data: [mult.eq_ebitda, mult.eq_rev, mult.eq_pe],
-        backgroundColor: ['rgba(201,169,97,0.8)','rgba(192,192,200,0.7)','rgba(157,127,58,0.8)'],
-        borderColor: ['#e3c789','#e0e0e6','#c9a961'], borderWidth: 1, borderRadius: 3 }]
+      labels: mult.periods.map(p => p.label),
+      datasets: [
+        { label: 'EV/EBITDA', data: mult.periods.map(p => p.eq_ebitda), backgroundColor: 'rgba(201,169,97,0.8)' },
+        { label: 'EV/Receita', data: mult.periods.map(p => p.eq_rev), backgroundColor: 'rgba(192,192,200,0.7)' },
+        { label: 'P/E', data: mult.periods.map(p => p.eq_pe), backgroundColor: 'rgba(157,127,58,0.8)' },
+      ]
     },
     options: {
-      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: '#a8a59a', font: { family: 'Inter', size: 11 } } } },
       scales: {
-        x: { ticks: { color: '#6c6a62', callback: v => fmt(v) }, grid: { color: 'rgba(42,46,56,0.4)' } },
-        y: { ticks: { color: '#a8a59a', font: { family: 'Inter', size: 12 } }, grid: { display: false } }
+        x: { ticks: { color: '#a8a59a' }, grid: { color: 'rgba(42,46,56,0.4)' } },
+        y: { ticks: { color: '#6c6a62', callback: v => fmt(v) }, grid: { color: 'rgba(42,46,56,0.4)' } }
       }
     }
   });
 }
 
+// ============================
+// RENDER — LBO
+// ============================
 function renderLBO(lbo) {
+  // KPIs
+  const irrCls = lbo.irr > 0.20 ? 'kpi-success' : (lbo.irr > 0.15 ? 'kpi-gold' : 'kpi-danger');
   document.getElementById('lbo-kpis').innerHTML = `
-    <div class="kpi kpi-gold"><div class="kpi-label">IRR do Sponsor</div><div class="kpi-value">${fmtP(lbo.irr)}</div></div>
+    <div class="kpi ${irrCls}"><div class="kpi-label">IRR do Sponsor</div><div class="kpi-value">${fmtP(lbo.irr)}</div></div>
     <div class="kpi kpi-silver"><div class="kpi-label">MoIC</div><div class="kpi-value">${lbo.moic.toFixed(2)}x</div></div>
     <div class="kpi kpi-gold"><div class="kpi-label">EV de Saída</div><div class="kpi-value">${fmtR(lbo.ev_exit)}</div></div>
     <div class="kpi kpi-silver"><div class="kpi-label">Equity de Saída</div><div class="kpi-value">${fmtR(lbo.equity_exit)}</div></div>
   `;
 
+  // Alerts
+  const alertsEl = document.getElementById('lbo-alerts');
+  let alerts = '';
+  const breach_years = lbo.cov_breach.map((b,i) => b ? `Ano ${i+1}` : null).filter(x=>x);
+  if (breach_years.length) {
+    alerts += `<div class="alert danger">⚠ <strong>Breach de covenant em:</strong> ${breach_years.join(', ')}. Net Leverage máx = ${lbo.cov_lev}x · ICR mín = ${lbo.cov_icr}x.</div>`;
+  } else {
+    alerts += `<div class="alert success">✓ <strong>Covenants respeitados</strong> em todos os 5 anos.</div>`;
+  }
+  if (lbo.equity_sponsor <= 0) {
+    alerts += `<div class="alert danger">⚠ <strong>Equity negativo:</strong> alavancagem total excede o equity necessário. Reduza alavancagem.</div>`;
+  }
+  alertsEl.innerHTML = alerts;
+
+  // S&U
   let html = '<tbody>';
-  html += `<tr><td class="row-label" colspan="2" style="font-weight:600;color:var(--silver-bright)">Uses</td></tr>`;
-  html += `<tr><td class="row-label">Enterprise Value</td><td class="num">${fmtN(lbo.ev_entry)}</td></tr>`;
+  html += `<tr class="row-section"><td colspan="2">Uses</td></tr>`;
+  html += `<tr><td class="row-label">Enterprise Value (entrada)</td><td class="num">${fmtN(lbo.ev_entry)}</td></tr>`;
   html += `<tr><td class="row-label">(+) Fees de transação</td><td class="num">${fmtN(lbo.fees)}</td></tr>`;
   html += `<tr><td class="row-label">(+) Refinanc. dívida existente</td><td class="num">${fmtN(lbo.divida_exist)}</td></tr>`;
   html += `<tr><td class="row-label">(-) Caixa existente</td><td class="num">${fmtN(-lbo.caixa_exist)}</td></tr>`;
   html += `<tr class="row-result"><td>Total Uses</td><td class="num">${fmtN(lbo.total_uses)}</td></tr>`;
-  html += '<tr><td colspan="2" style="height:8px"></td></tr>';
-  html += `<tr><td class="row-label" colspan="2" style="font-weight:600;color:var(--silver-bright)">Sources</td></tr>`;
-  html += `<tr><td class="row-label">Nova dívida</td><td class="num">${fmtN(lbo.nova_divida)}</td></tr>`;
+  html += '<tr><td colspan="2" style="height:6px"></td></tr>';
+  html += `<tr class="row-section"><td colspan="2">Sources</td></tr>`;
+  html += `<tr><td class="row-label">TLB (Tranche A)</td><td class="num">${fmtN(lbo.tlb_inicial)}</td></tr>`;
+  html += `<tr><td class="row-label">Mezz/HY (Tranche B)</td><td class="num">${fmtN(lbo.mezz_inicial)}</td></tr>`;
   html += `<tr><td class="row-label">Equity do sponsor</td><td class="num">${fmtN(lbo.equity_sponsor)}</td></tr>`;
-  html += `<tr class="row-result"><td>Total Sources</td><td class="num">${fmtN(lbo.total_uses)}</td></tr>`;
+  html += `<tr class="row-result"><td>Total Sources</td><td class="num">${fmtN(lbo.tlb_inicial + lbo.mezz_inicial + lbo.equity_sponsor)}</td></tr>`;
   html += '</tbody>';
   document.getElementById('tblSU').innerHTML = html;
 
+  // Return
   html = '<tbody>';
   html += `<tr><td class="row-label">EBITDA de saída (Ano 5)</td><td class="num">${fmtN(lbo.ebitda_exit)}</td></tr>`;
   html += `<tr><td class="row-label">Múltiplo de saída</td><td class="num">${lbo.exit_mult_lbo}x</td></tr>`;
   html += `<tr><td class="row-label">EV de saída</td><td class="num">${fmtN(lbo.ev_exit)}</td></tr>`;
-  html += `<tr><td class="row-label">(-) Dívida remanescente</td><td class="num">${fmtN(-lbo.divida_rem)}</td></tr>`;
+  html += `<tr><td class="row-label">(-) Dívida total remanescente</td><td class="num">${fmtN(-lbo.total_debt_exit)}</td></tr>`;
   html += `<tr class="row-result"><td>Equity de saída</td><td class="num">${fmtN(lbo.equity_exit)}</td></tr>`;
-  html += '<tr><td colspan="2" style="height:8px"></td></tr>';
+  html += '<tr><td colspan="2" style="height:6px"></td></tr>';
   html += `<tr><td class="row-label">Equity investido</td><td class="num">${fmtN(lbo.equity_sponsor)}</td></tr>`;
+  if (lbo.div_recap_pct > 0) {
+    html += `<tr><td class="row-label">Dividend recap (Ano 3)</td><td class="num">${fmtN(lbo.equity_sponsor*lbo.div_recap_pct)}</td></tr>`;
+  }
   html += `<tr class="row-highlight"><td class="row-label">MoIC</td><td class="num">${lbo.moic.toFixed(2)}x</td></tr>`;
   html += `<tr class="row-result"><td>IRR do Sponsor</td><td class="num">${fmtP(lbo.irr)}</td></tr>`;
   html += '</tbody>';
   document.getElementById('tblReturn').innerHTML = html;
 
+  // Schedule
   const yrs = ['1','2','3','4','5'];
   html = `<thead><tr><th></th>${yrs.map(y=>`<th class="num">Ano ${y}</th>`).join('')}</tr></thead><tbody>`;
   const flowRows = [
-    ['EBITDA', lbo.ebitdas, fmtN],
-    ['(-) Juros', lbo.juros_arr.map(v=>-v), fmtN],
-    ['Lucro líquido', lbo.ll_arr, fmtN],
-    ['FCF p/ amortização', lbo.fcf_arr, fmtN],
+    ['EBITDA', lbo.ebitdas, fmtN, false],
+    ['(-) Juros TLB', lbo.juros_tlb_arr.map(v=>-v), fmtN, false],
+    ['(-) Juros Mezz', lbo.juros_mezz_arr.map(v=>-v), fmtN, false],
+    ['Lucro líquido', lbo.ll_arr, fmtN, false],
+    ['FCF disponível', lbo.fcf_arr, fmtN, false],
     ['sep'],
-    ['Saldo dívida (início)', lbo.saldos.slice(0,5), fmtN],
-    ['(-) Amortização', lbo.amort_arr.map(v=>-v), fmtN],
-    ['Saldo dívida (fim)', lbo.saldos.slice(1), fmtN],
-    ['D/EBITDA (fim)', lbo.saldos.slice(1).map((s,i)=>s/lbo.ebitdas[i]), (v)=>v.toFixed(1)+'x'],
+    ['Saldo TLB (início)', lbo.tlb_saldos.slice(0,5), fmtN, false],
+    ['(-) Amort. mandatória', lbo.amort_tlb_mand.map(v=>-v), fmtN, true],
+    ['(-) Sweep TLB', lbo.amort_tlb_sweep.map(v=>-v), fmtN, true],
+    ['Saldo TLB (fim)', lbo.tlb_saldos.slice(1), fmtN, false],
+    ['sep'],
+    ['Saldo Mezz (início)', lbo.mezz_saldos.slice(0,5), fmtN, false],
+    ['(-) Sweep Mezz', lbo.amort_mezz_arr.map(v=>-v), fmtN, true],
+    ['Saldo Mezz (fim)', lbo.mezz_saldos.slice(1), fmtN, false],
+    ['sep'],
+    ['Net Leverage', lbo.net_lev_arr, (v)=>v.toFixed(1)+'x', false],
+    ['ICR', lbo.icr_arr, (v)=>v.toFixed(1)+'x', false],
   ];
   flowRows.forEach(r => {
     if (r[0]==='sep') { html += '<tr><td colspan="6" style="height:4px;border-bottom:1px solid var(--border)"></td></tr>'; return; }
-    html += `<tr><td class="row-label">${r[0]}</td>`;
-    for (let i=0; i<5; i++) html += `<td class="num">${r[2](r[1][i])}</td>`;
+    const labelCls = r[3] ? 'row-sublabel' : 'row-label';
+    html += `<tr><td class="${labelCls}">${r[0]}</td>`;
+    for (let i=0; i<5; i++) {
+      let cellCls = '';
+      // Highlight covenant breach years
+      if ((r[0] === 'Net Leverage' && lbo.net_lev_arr[i] > lbo.cov_lev) ||
+          (r[0] === 'ICR' && lbo.icr_arr[i] < lbo.cov_icr)) {
+        cellCls = ' style="color:var(--danger);font-weight:600"';
+      }
+      html += `<td class="num"${cellCls}>${r[2](r[1][i])}</td>`;
+    }
     html += '</tr>';
   });
   html += '</tbody>';
   document.getElementById('tblLBOFlow').innerHTML = html;
 
+  renderLBOAttribution(lbo);
   renderSensLBO(lbo);
 
   if (chartLBOInstance) chartLBOInstance.destroy();
@@ -1252,14 +1837,8 @@ function renderLBO(lbo) {
     data: {
       labels: ['Entrada','Ano 1','Ano 2','Ano 3','Ano 4','Ano 5'],
       datasets: [
-        { label: 'Dívida', data: lbo.saldos,
-          backgroundColor: 'rgba(157,127,58,0.7)',
-          borderColor: '#c9a961', borderWidth: 1, borderRadius: 2 },
-        { label: 'Equity implícito', data: lbo.saldos.map((s,i)=>{
-          const ebitda = i===0 ? lbo.ebitdas[0] : (i<=5 ? lbo.ebitdas[Math.min(i-1,4)] : lbo.ebitda_exit);
-          return ebitda * lbo.exit_mult_lbo - s;
-        }), backgroundColor: 'rgba(192,192,200,0.65)',
-          borderColor: '#e0e0e6', borderWidth: 1, borderRadius: 2 },
+        { label: 'TLB', data: lbo.tlb_saldos, backgroundColor: 'rgba(157,127,58,0.75)', borderColor: '#9d7f3a', borderWidth: 1, borderRadius: 2 },
+        { label: 'Mezz', data: lbo.mezz_saldos, backgroundColor: 'rgba(212,166,85,0.65)', borderColor: '#d4a655', borderWidth: 1, borderRadius: 2 },
       ]
     },
     options: {
@@ -1273,45 +1852,90 @@ function renderLBO(lbo) {
   });
 }
 
-function renderSensLBO(lbo) {
-  const exit_mults = [6.5,7.0,7.5,8.0,8.5];
-  const leverages = [3.0,4.0,4.5,5.0,5.5];
+function renderLBOAttribution(lbo) {
+  const total = Math.abs(lbo.delta_growth) + Math.abs(lbo.delta_multiple) + Math.abs(lbo.delta_delev);
+  const max = Math.max(Math.abs(lbo.delta_growth), Math.abs(lbo.delta_multiple), Math.abs(lbo.delta_delev), 1);
 
-  function calcIRRForParams(em, lev) {
-    const nd = (getVal('receita_base')*getVal('m0')/100)*lev;
-    const ev0 = getVal('receita_base')*(getVal('m0')/100)*lbo.entry_mult;
-    const fees = ev0 * lbo.fees_pct;
-    const tu = ev0 + fees + lbo.divida_exist - lbo.caixa_exist;
-    const eq_in = tu - nd;
+  const items = [
+    { label: 'Crescimento EBITDA', value: lbo.delta_growth, cls: 'growth', desc: '(EBITDA exit − entry) × entry mult' },
+    { label: 'Multiple Δ', value: lbo.delta_multiple, cls: 'multiple', desc: 'EBITDA exit × (exit mult − entry mult)' },
+    { label: 'Deleveraging', value: lbo.delta_delev, cls: 'delev', desc: 'Dívida entry − dívida exit' },
+  ];
+
+  let html = '';
+  items.forEach(it => {
+    const h = (Math.abs(it.value) / max) * 180;
+    const pct = total > 0 ? (Math.abs(it.value) / total) * 100 : 0;
+    html += `<div class="attr-bar-group">
+      <div class="attr-value">${fmt(it.value)}</div>
+      <div class="attr-pct">${pct.toFixed(0)}% do total</div>
+      <div class="attr-bar ${it.cls}" style="height:${h}px"></div>
+      <div class="attr-label">${it.label}</div>
+      <div class="text-muted" style="font-size:0.66rem;text-align:center">${it.desc}</div>
+    </div>`;
+  });
+  document.getElementById('lboAttr').innerHTML = html;
+}
+
+function renderSensLBO(lbo) {
+  const exit_mults = [-1.5,-0.75,0,0.75,1.5].map(d => lbo.exit_mult_lbo + d);
+  const total_lev_base = lbo.lev_tlb + lbo.lev_mezz;
+  const levs = [-1.5,-0.75,0,0.75,1.5].map(d => total_lev_base + d);
+
+  function calcIRRForParams(em, total_lev) {
+    // Simplified: re-run LBO loop with new lev (preserving TLB:Mezz ratio)
+    const tlb_share = lbo.lev_tlb / total_lev_base;
+    const new_lev_tlb = total_lev * tlb_share;
+    const new_lev_mezz = total_lev * (1 - tlb_share);
+
+    const ev = lbo.ebitda0 * lbo.entry_mult;
+    const fees = ev * lbo.fees_pct;
+    const tu = ev + fees + lbo.divida_exist - lbo.caixa_exist;
+    const tlb0 = lbo.ebitda0 * new_lev_tlb;
+    const mezz0 = lbo.ebitda0 * new_lev_mezz;
+    const eq_in = tu - tlb0 - mezz0;
     if (eq_in <= 0) return null;
 
-    let saldo = nd;
-    for (let i=0; i<5; i++) {
-      const juros = saldo * lbo.kd_lbo;
+    let tlb_s = tlb0, mezz_s = mezz0;
+    const cfs = [-eq_in, 0, 0, 0, 0, 0];
+    const amort_tlb_pct_local = getVal('lbo_amort_tlb')/100;
+
+    for (let i = 0; i < 5; i++) {
+      const j_t = tlb_s * lbo.kd_tlb;
+      const j_m = mezz_s * lbo.kd_mezz;
       const ebit = lbo.ebitdas[i] - lbo.das_arr[i];
-      const ebt = ebit - juros;
-      const ir = ebt > 0 ? ebt*lbo.tax : 0;
+      const ebt = ebit - j_t - j_m;
+      const ir = ebt > 0 ? ebt * lbo.tax : 0;
       const ll = ebt - ir;
       const fcf = ll + lbo.das_arr[i] - lbo.capexs[i] - lbo.dwc[i];
-      const amort = Math.min(fcf * lbo.amort_pct, saldo);
-      saldo = saldo - amort;
+      const am_tlb_mand = Math.min(tlb_s * amort_tlb_pct_local, tlb_s);
+      let cash_after = fcf - am_tlb_mand;
+      let am_tlb_sw = 0, am_mezz = 0;
+      if (cash_after > 0) {
+        const sw = cash_after * lbo.sweep_pct;
+        const tlb_left = tlb_s - am_tlb_mand;
+        am_tlb_sw = Math.min(sw, tlb_left);
+        am_mezz = Math.min(sw - am_tlb_sw, mezz_s);
+      }
+      tlb_s -= (am_tlb_mand + am_tlb_sw);
+      mezz_s -= am_mezz;
     }
     const ev_out = lbo.ebitda_exit * em;
-    const eq_out = ev_out - saldo;
-    const moic = eq_out / eq_in;
-    return moic > 0 ? Math.pow(moic, 0.2) - 1 : null;
+    const eq_out = ev_out - tlb_s - mezz_s;
+    cfs[5] = eq_out;
+    return irr(cfs, 0.2);
   }
 
-  let html = '<table class="sens-table"><thead><tr><th>Múlt. Saída \\ D/EBITDA →</th>';
-  leverages.forEach(l => html += `<th>${l.toFixed(1)}x</th>`);
+  let html = '<table class="sens-table"><thead><tr><th>Múlt. Saída \\ D/EBITDA total →</th>';
+  levs.forEach(l => html += `<th>${l.toFixed(1)}x</th>`);
   html += '</tr></thead><tbody>';
   exit_mults.forEach(em => {
     html += `<tr><th>${em.toFixed(1)}x</th>`;
-    leverages.forEach(lev => {
-      const irr = calcIRRForParams(em, lev);
-      const isCurrent = Math.abs(em-lbo.exit_mult_lbo)<0.01 && Math.abs(lev-lbo.leverage)<0.01;
-      const cls = isCurrent ? 'cell-current' : irr > 0.25 ? 'cell-high' : irr < 0.15 ? 'cell-low' : 'cell-mid';
-      html += `<td class="${cls}">${irr ? fmtP(irr) : '—'}</td>`;
+    levs.forEach(lev => {
+      const irrv = calcIRRForParams(em, lev);
+      const isCurrent = Math.abs(em-lbo.exit_mult_lbo)<0.01 && Math.abs(lev-total_lev_base)<0.01;
+      const cls = isCurrent ? 'cell-current' : (irrv == null ? 'cell-low' : irrv > 0.25 ? 'cell-high' : irrv < 0.15 ? 'cell-low' : 'cell-mid');
+      html += `<td class="${cls}">${irrv == null ? 'n/a' : fmtP(irrv,1)}</td>`;
     });
     html += '</tr>';
   });
@@ -1319,18 +1943,184 @@ function renderSensLBO(lbo) {
   document.getElementById('sensLBO').innerHTML = html;
 }
 
-function renderFootball(dcf, mult, lbo) {
+// ============================
+// RENDER — SENSIBILIDADE
+// ============================
+function calcEVForOverride(overrides) {
+  // Re-runs DCF with temporary input overrides (does NOT touch DOM display)
+  const original = {};
+  Object.keys(overrides).forEach(k => {
+    const el = document.querySelector(`[data-key="${k}"]`);
+    if (el) {
+      original[k] = el.value;
+      el.value = overrides[k];
+    }
+  });
+  const infl = calcInflationCoherence(false);
+  const nwc = calcNWC(false);
+  const comps = calcComps(false);
+  const w = calcWACC(comps, false);
+  const dcf = calcDCF(w, nwc, infl);
+  // Restore
+  Object.entries(original).forEach(([k,v]) => {
+    const el = document.querySelector(`[data-key="${k}"]`);
+    if (el) el.value = v;
+  });
+  return dcf.ev_gordon;
+}
+
+function renderTornado(baseEV) {
+  const variables = [
+    { key: 'g1', label: 'Crescimento Y1', delta: 0.10 },
+    { key: 'g2', label: 'Crescimento Y2', delta: 0.10 },
+    { key: 'm0', label: 'Margem EBITDA Y0', delta: 0.10 },
+    { key: 'm5', label: 'Margem EBITDA Y5', delta: 0.10 },
+    { key: 'rf', label: 'Rf nominal', delta: 0.10 },
+    { key: 'erp', label: 'ERP', delta: 0.10 },
+    { key: 'kd_bruto', label: 'Kd bruto', delta: 0.10 },
+    { key: 'g_real', label: 'g real perpétuo', delta: 0.10 },
+    { key: 'inflacao', label: 'Inflação', delta: 0.10 },
+    { key: 'capex_perp', label: 'CAPEX perpétuo', delta: 0.10 },
+    { key: 'da_pct', label: 'D&A', delta: 0.10 },
+    { key: 'dso', label: 'DSO', delta: 0.10 },
+  ];
+
+  const results = variables.map(v => {
+    const baseV = parseFloat(getStr(v.key));
+    const upV = (baseV * (1 + v.delta)).toString();
+    const dnV = (baseV * (1 - v.delta)).toString();
+    const evUp = calcEVForOverride({ [v.key]: upV });
+    const evDn = calcEVForOverride({ [v.key]: dnV });
+    return {
+      label: v.label,
+      up: evUp - baseEV,
+      dn: evDn - baseEV,
+      range: Math.abs(evUp - baseEV) + Math.abs(evDn - baseEV)
+    };
+  });
+
+  results.sort((a,b) => b.range - a.range);
+  const maxRange = results[0].range || 1;
+
+  let html = '';
+  results.forEach(r => {
+    const wUp = (Math.abs(r.up) / maxRange) * 45; // up to 45% width
+    const wDn = (Math.abs(r.dn) / maxRange) * 45;
+    // Determine which side: up positive -> right, negative -> left
+    const upClass = r.up > 0 ? 'pos' : 'neg';
+    const dnClass = r.dn > 0 ? 'pos' : 'neg';
+    html += `<div class="tornado-row">
+      <div class="tornado-label">${r.label}</div>
+      <div class="tornado-bar-area">
+        <div class="tornado-bar ${dnClass}" style="position:absolute;right:50%;width:${wDn}%">${fmt(r.dn)}</div>
+        <div class="tornado-bar ${upClass}" style="position:absolute;left:50%;width:${wUp}%">${fmt(r.up)}</div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('tornado').innerHTML = html;
+}
+
+function runMonteCarlo() {
+  const N = 2000;
+  const baseValues = {};
+  ['g1','g2','g3','g4','g5','m0','m1','m2','m3','m4','m5','rf','erp','g_real','inflacao','capex_perp'].forEach(k => {
+    baseValues[k] = parseFloat(getStr(k));
+  });
+
+  const evs = [];
+  for (let i = 0; i < N; i++) {
+    const overrides = {};
+    Object.entries(baseValues).forEach(([k, v]) => {
+      // Triangular distribution: ±15% spread
+      const min = v * 0.85;
+      const max = v * 1.15;
+      overrides[k] = sampleTriangular(min, v, max).toString();
+    });
+    try {
+      const ev = calcEVForOverride(overrides);
+      if (isFinite(ev) && ev > 0) evs.push(ev);
+    } catch(e) {}
+  }
+
+  // Histogram
+  evs.sort((a,b) => a-b);
+  const min = evs[0], max = evs[evs.length-1];
+  const p5 = evs[Math.floor(N*0.05)], p50 = evs[Math.floor(N*0.5)], p95 = evs[Math.floor(N*0.95)];
+  const mean = evs.reduce((a,b)=>a+b,0)/evs.length;
+
+  const bins = 30;
+  const binSize = (max - min) / bins;
+  const hist = new Array(bins).fill(0);
+  evs.forEach(v => {
+    let idx = Math.floor((v - min) / binSize);
+    if (idx >= bins) idx = bins - 1;
+    hist[idx]++;
+  });
+  const maxBin = Math.max(...hist);
+
+  let html = `<div class="kpi-row">
+    <div class="kpi kpi-silver"><div class="kpi-label">EV — P5</div><div class="kpi-value">${fmt(p5)}</div></div>
+    <div class="kpi kpi-gold"><div class="kpi-label">EV — Mediana</div><div class="kpi-value">${fmt(p50)}</div></div>
+    <div class="kpi kpi-silver"><div class="kpi-label">EV — Média</div><div class="kpi-value">${fmt(mean)}</div></div>
+    <div class="kpi kpi-gold"><div class="kpi-label">EV — P95</div><div class="kpi-value">${fmt(p95)}</div></div>
+  </div>
+  <div class="histogram">`;
+  hist.forEach(h => {
+    const heightPct = (h / maxBin) * 100;
+    html += `<div class="histogram-bar" style="height:${heightPct}%" title="${h} simulações"></div>`;
+  });
+  html += `</div><div class="histogram-axis"><span>${fmt(min)}</span><span>${fmt((min+max)/2)}</span><span>${fmt(max)}</span></div>
+  <div class="text-muted" style="font-size:0.74rem; text-align:center; margin-top:1rem">
+    ${N.toLocaleString('pt-BR')} simulações · variação triangular ±15% nas premissas-chave (crescimento, margens, taxas).
+    <br>P5–P95: ${fmt(p5)} – ${fmt(p95)} · faixa de 90% de confiança.
+  </div>`;
+  document.getElementById('mcContent').innerHTML = html;
+}
+
+// ============================
+// RENDER — FOOTBALL FIELD with REAL ranges
+// ============================
+function renderFootball(dcf, mult, lbo, comps) {
+  // DCF Gordon: range from sensitivity matrix corners
+  const wacc = dcf.wacc, g = dcf.g_perp;
+  const ev_corners = [];
+  [-0.02, 0.02].forEach(dw => {
+    [-0.02, 0.02].forEach(dg => {
+      const w_new = wacc + dw, g_new = g + dg;
+      const adjusted_fcff = dcf.fcff_perp_ss * (1+g_new)/(1+g);
+      if (w_new > g_new) {
+        const tv = adjusted_fcff / (w_new - g_new);
+        const vp = tv / Math.pow(1+w_new, 5);
+        // Adjust sum_vp for new wacc - approximate with current FCFFs
+        let new_sum_vp = 0;
+        for (let i = 1; i <= 5; i++) new_sum_vp += dcf.fcffs[i] / Math.pow(1+w_new, i);
+        ev_corners.push(new_sum_vp + vp);
+      }
+    });
+  });
+  const dcf_gordon_min = Math.min(...ev_corners);
+  const dcf_gordon_max = Math.max(...ev_corners);
+
+  // DCF Exit: range from exit_mult ±2x
+  const ev_exit_min = dcf.sum_vp + (dcf.ebitdas[5] * (dcf.exit_mult - 2)) / Math.pow(1+wacc, 5);
+  const ev_exit_max = dcf.sum_vp + (dcf.ebitdas[5] * (dcf.exit_mult + 2)) / Math.pow(1+wacc, 5);
+
+  // LBO: range from exit mult ±1x
+  const lbo_min = dcf.ebitdas[0] * (lbo.entry_mult - 1);
+  const lbo_max = dcf.ebitdas[0] * (lbo.entry_mult + 1);
+
+  const ntm = mult.periods[1];
   const methods = [
-    { label: 'DCF — Gordon', min: dcf.ev_gordon*0.9, central: dcf.ev_gordon, max: dcf.ev_gordon*1.1, cls: 'dcf-gordon' },
-    { label: 'DCF — Múltiplo', min: dcf.ev_exit*0.9, central: dcf.ev_exit, max: dcf.ev_exit*1.1, cls: 'dcf-exit' },
-    { label: 'Múlt. — EV/EBITDA', min: mult.ev_ebitda_min, central: mult.ev_ebitda, max: mult.ev_ebitda_max, cls: 'mult-ebitda' },
-    { label: 'Múlt. — EV/Receita', min: mult.ev_rev_min, central: mult.ev_rev, max: mult.ev_rev_max, cls: 'mult-rev' },
-    { label: 'LBO — EV Entrada', min: lbo.ev_entry*0.9, central: lbo.ev_entry, max: lbo.ev_entry*1.1, cls: 'lbo' },
+    { label: 'DCF — Gordon', min: dcf_gordon_min, central: dcf.ev_gordon, max: dcf_gordon_max, cls: 'dcf-gordon' },
+    { label: 'DCF — Múltiplo Saída', min: ev_exit_min, central: dcf.ev_exit, max: ev_exit_max, cls: 'dcf-exit' },
+    { label: 'Múlt. — EV/EBITDA (NTM)', min: mult.ev_ebitda_min, central: ntm.ev_ebitda, max: mult.ev_ebitda_max, cls: 'mult-ebitda' },
+    { label: 'Múlt. — EV/Receita (NTM)', min: mult.ev_rev_min, central: ntm.ev_rev, max: mult.ev_rev_max, cls: 'mult-rev' },
+    { label: 'LBO — EV Entrada', min: lbo_min, central: lbo.ev_entry, max: lbo_max, cls: 'lbo' },
   ];
 
   const allVals = methods.flatMap(m=>[m.min, m.max]);
-  const gMin = Math.min(...allVals)*0.9;
-  const gMax = Math.max(...allVals)*1.1;
+  const gMin = Math.min(...allVals)*0.92;
+  const gMax = Math.max(...allVals)*1.08;
   const range = gMax - gMin;
 
   const ev_central = methods.reduce((a,m)=>a+m.central,0)/methods.length;
@@ -1340,21 +2130,21 @@ function renderFootball(dcf, mult, lbo) {
 
   document.getElementById('ff-kpis').innerHTML = `
     <div class="kpi kpi-gold"><div class="kpi-label">EV Central (Média)</div><div class="kpi-value">${fmtR(ev_central)}</div></div>
-    <div class="kpi kpi-silver"><div class="kpi-label">Equity Value Central</div><div class="kpi-value">${fmtR(eq_central)}</div></div>
+    <div class="kpi kpi-silver"><div class="kpi-label">Equity Central</div><div class="kpi-value">${fmtR(eq_central)}</div></div>
     <div class="kpi kpi-gold"><div class="kpi-label">Preço/Ação Central</div><div class="kpi-value">R$ ${(eq_central/acoes).toFixed(2)}</div></div>
-    <div class="kpi kpi-silver"><div class="kpi-label">Faixa EV (Ampla)</div><div class="kpi-value" style="font-size:1rem">${fmt(Math.min(...allVals))} – ${fmt(Math.max(...allVals))}</div></div>
+    <div class="kpi kpi-silver"><div class="kpi-label">Faixa EV (Ampla)</div><div class="kpi-value" style="font-size:0.95rem">${fmt(Math.min(...allVals))}–${fmt(Math.max(...allVals))}</div></div>
   `;
 
   let html = '';
   methods.forEach(m => {
     const left = ((m.min - gMin)/range)*100;
     const width = ((m.max - m.min)/range)*100;
+    const midPos = ((m.central - gMin)/range)*100;
     html += `<div class="ff-row">
       <div class="ff-label">${m.label}</div>
       <div class="ff-bar-area">
-        <div class="ff-bar ${m.cls}" style="left:${left}%;width:${Math.max(width,4)}%">
-          ${fmt(m.central)}
-        </div>
+        <div class="ff-bar ${m.cls}" style="left:${left}%;width:${Math.max(width,4)}%">${fmt(m.central)}</div>
+        <div class="ff-bar-mid" style="left:${midPos}%"></div>
       </div>
     </div>`;
   });
@@ -1368,12 +2158,15 @@ function renderFootball(dcf, mult, lbo) {
   document.getElementById('ffAxis').innerHTML = axisHtml;
 
   const synthRows = [
-    ['WACC', fmtP(dcf.wacc)],
-    ['Crescimento perpétuo (g)', fmtP(dcf.g_perp)],
-    ['Múlt. implícito EV/EBITDA (Gordon)', fmtX(dcf.ev_gordon / dcf.ebitdas[0])],
+    ['WACC', fmtP(dcf.wacc, 2)],
+    ['g nominal (perpetuidade)', fmtP(dcf.g_perp, 2)],
+    ['Múlt. implícito EV/EBITDA (Gordon)', fmtX(dcf.implied_mult)],
+    ['Range comparáveis EV/EBITDA', `${fmtX(comps.min_ev)} – ${fmtX(comps.med_ev)} – ${fmtX(comps.max_ev)}`],
     ['% TV / EV (Gordon)', fmtP(dcf.tv_pct)],
     ['IRR do Sponsor (LBO)', fmtP(lbo.irr)],
     ['MoIC (LBO)', lbo.moic.toFixed(2) + 'x'],
+    ['Net Leverage máx ao longo do plano (LBO)', fmtX(Math.max(...lbo.net_lev_arr))],
+    ['ICR mín ao longo do plano (LBO)', fmtX(Math.min(...lbo.icr_arr))],
   ];
   let shtml = '<tbody>';
   synthRows.forEach(r => {
@@ -1383,40 +2176,103 @@ function renderFootball(dcf, mult, lbo) {
   document.getElementById('tblSintese').innerHTML = shtml;
 }
 
+// ============================
+// MAIN ORCHESTRATOR
+// ============================
 function recalcAll() {
   try {
-    const w = calcWACC();
+    const infl = calcInflationCoherence();
+    const nwc = calcNWC();
     const comps = calcComps();
+    const w = calcWACC(comps);
     calcDivLiq();
-    const dcf = calcDCF(w);
+    const dcf = calcDCF(w, nwc, infl);
     const mult = calcMultiplos(dcf, comps);
     const lbo = calcLBO(dcf);
-    renderDCF(dcf);
+    renderDCF(dcf, comps, infl);
     renderMultiplos(mult, comps);
     renderLBO(lbo);
-    renderFootball(dcf, mult, lbo);
+    renderFootball(dcf, mult, lbo, comps);
+
+    // Tornado uses the current EV as base
+    document.getElementById('sens-kpis').innerHTML = `
+      <div class="kpi kpi-gold"><div class="kpi-label">EV Base (DCF Gordon)</div><div class="kpi-value">${fmtR(dcf.ev_gordon)}</div></div>
+      <div class="kpi kpi-silver"><div class="kpi-label">Cenário Atual</div><div class="kpi-value" style="font-size:1.1rem">${currentScenario.toUpperCase()}</div></div>
+    `;
+    renderTornado(dcf.ev_gordon);
   } catch(e) {
     console.error('Erro no recálculo:', e);
   }
 }
 
-// EVENT LISTENERS
-document.addEventListener('input', (e) => {
-  if (e.target.classList.contains('input-cell')) recalcAll();
-});
+// ============================
+// INIT
+// ============================
+function showSection(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  const sec = document.getElementById('sec-' + name);
+  if (sec) sec.classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector(`.nav-btn[data-section="${name}"]`);
+  if (btn) btn.classList.add('active');
+}
 
-document.querySelectorAll('.nav-btn').forEach(btn => {
-  btn.addEventListener('click', () => showSection(btn.dataset.section));
-});
+function init() {
+  renderCompsInputs();
+  recalcAll();
 
-document.getElementById('btnConfig').addEventListener('click', openSetup);
-document.getElementById('btnCancel').addEventListener('click', closeSetup);
-document.getElementById('btnConnect').addEventListener('click', connectSupabase);
-document.getElementById('btnSave').addEventListener('click', saveToSupabase);
+  // Inputs
+  document.addEventListener('input', (e) => {
+    if (e.target.classList.contains('input-cell')) {
+      captureCurrentScenario();
+      recalcAll();
+    }
+  });
 
-recalcAll();
+  // Nav
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => showSection(btn.dataset.section));
+  });
+
+  // Scenarios
+  document.querySelectorAll('.scenario-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.scen;
+      // Save current
+      captureCurrentScenario();
+      // If target scenario empty, derive from base with delta
+      if (!scenarios[target] || !Object.keys(scenarios[target]).length) {
+        if (target === 'base') {
+          scenarios.base = getAllInputs();
+        } else {
+          applyScenarioDelta(target);
+          scenarios[target] = getAllInputs();
+        }
+      }
+      loadScenario(target);
+    });
+  });
+
+  // Modal & save buttons
+  document.getElementById('btnConfig').addEventListener('click', openSetup);
+  document.getElementById('btnCancel').addEventListener('click', closeSetup);
+  document.getElementById('btnConnect').addEventListener('click', connectSupabase);
+  document.getElementById('btnSave').addEventListener('click', saveToSupabase);
+  document.getElementById('btnRunMC').addEventListener('click', runMonteCarlo);
+
+  // Capture initial base scenario
+  scenarios.base = getAllInputs();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
 
 })();
+
 </script>
+
 </body>
 </html>
